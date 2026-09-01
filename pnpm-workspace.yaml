@@ -1,0 +1,10 @@
+packages:
+  - slides/**
+
+allowBuilds:
+  vue-demi: true
+
+catalog:
+  vue: ^3.5.13
+  "@slidev/cli": latest
+  "@slidev/theme-default": latest

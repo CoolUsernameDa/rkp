@@ -1,0 +1,11 @@
+{
+  "name": "rkp-slides",
+  "private": true,
+  "scripts": {
+    "preview": "slidev-workspace preview",
+    "build": "slidev-workspace build"
+  },
+  "dependencies": {
+    "slidev-workspace": "latest"
+  }
+}
