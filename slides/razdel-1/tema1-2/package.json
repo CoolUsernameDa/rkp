@@ -1,5 +1,5 @@
 {
-  "name": "00-vvedenie",
+  "name": "12-dataclasses",
   "type": "module",
   "private": true,
   "scripts": {
