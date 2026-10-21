@@ -60,40 +60,15 @@ layout: default
 layout: default
 ---
 
-# Напоминание: что делает `for`
-
-<v-clicks>
-
-- `for x in obj:` по очереди получает элементы объекта `obj` и выполняет тело цикла для каждого
-- Так обходят списки, строки, кортежи, словари, множества, диапазоны `range`, строки файла
-- Объекты, по которым можно выполнить `for`, называются итерируемыми
-
-</v-clicks>
-
-<v-click>
-
-Столь разные объекты обходятся одним и тем же циклом, потому что за ним
-стоит единый протокол. Он и есть тема этого блока.
-
-</v-click>
-
----
-layout: default
----
-
 # Что скрыто за `for`
 
-Цикл `for` работает в два шага. Сначала вызывается `iter(obj)`, который
-возвращает итератор — объект, помнящий текущую позицию. Затем снова и
-снова вызывается `next()` для этого итератора, пока не будет поднято
-исключение `StopIteration`.
+Цикл `for` одинаково обходит списки, строки, словари, `range`. Такие
+объекты называются итерируемыми. Цикл работает в два шага: `iter(obj)`
+возвращает итератор — объект, помнящий текущую позицию. Затем для него
+снова и снова вызывается `next()`, пока не будет поднято исключение
+`StopIteration`.
 
-```python
-for x in [10, 20, 30]:
-    print(x)
-```
-
-То же самое, записанное вручную:
+Цикл `for x in [10, 20, 30]: print(x)`, записанный вручную:
 
 ```python
 it = iter([10, 20, 30])
@@ -127,142 +102,38 @@ layout: default
 
 ---
 layout: default
-clicks: 4
+clicks: 5
 ---
 
 # Итератор по шагам
 
 Каждый вызов `next()` возвращает очередной элемент и сдвигает указатель.
+Итератор движется только вперёд: после исчерпания повторный обход пуст.
 
-<IteratorStepper :items="[10, 20, 30]" :step="$clicks" />
+<IteratorStepper :items="[10, 20, 30]" :step="$clicks" :extra="['list(it)  →  []   # элементов не осталось']" />
 
 ---
 layout: default
 ---
 
-# `iter()` и `next()` вручную
+# `iter()`, `next()` и `StopIteration` вживую
 
-```py {monaco-run}
+```py {monaco-run} {autorun:false}
 it = iter([10, 20, 30])
-print(type(it).__name__)
-print(next(it))
-print(next(it))
-print(next(it))
-```
-
-<v-click>
-
-`iter()` вернул итератор (тип `list_iterator`), а `next()` берёт из него
-элементы по одному. Четвёртый вызов `next(it)` поднял бы `StopIteration`.
-
-</v-click>
-
----
-layout: default
----
-
-# `StopIteration` — сигнал конца
-
-<v-clicks>
-
-- Исключение — способ сообщить об особой ситуации; перехватывается конструкцией `try`/`except`
-- `StopIteration` означает «элементов больше нет»
-- Цикл `for` перехватывает его сам и завершается без ошибки
-- При ручном вызове `next()` на исчерпанном итераторе исключение получает вызывающий код
-
-</v-clicks>
-
----
-layout: default
----
-
-# Ручной обход до `StopIteration`
-
-```py {monaco-run}
-it = iter("abc")
-while True:
-    try:
-        ch = next(it)
-    except StopIteration:
-        print("элементы закончились")
-        break
-    print(ch)
-```
-
-<v-click>
-
-Так работает `for ch in "abc"`: тело цикла выполняется для каждого
-элемента, а исключение `StopIteration` служит условием выхода.
-
-</v-click>
-
----
-layout: default
-clicks: 5
----
-
-# Итератор одноразовый
-
-Итератор движется только вперёд. Вернуться к началу и пройти повторно он
-не может.
-
-<IteratorStepper :items="[1, 2, 3]" :step="$clicks" :extra="['list(it)  →  []   # элементов не осталось']" />
-
----
-layout: default
----
-
-# Второй проход по исчерпанному итератору
-
-```py {monaco-run}
-it = iter([1, 2, 3])
+print(type(it).__name__, next(it), next(it))
 print(list(it))
 print(list(it))
-```
 
-<v-click>
-
-Первый `list(it)` исчерпал итератор, второй получил пустой результат.
-Ошибки при этом нет: итератор просто закончился. Такое поведение легко
-остаётся незамеченным, поэтому его важно знать заранее.
-
-</v-click>
-
----
-layout: default
----
-
-# Ленивые встроенные функции
-
-<v-clicks>
-
-- `map(f, seq)` — применяет функцию `f` к каждому элементу
-- `filter(f, seq)` — оставляет элементы, для которых `f` вернула истину
-- `zip(a, b)` — объединяет элементы нескольких последовательностей в кортежи
-- `enumerate(seq)` — добавляет номер к каждому элементу
-- Все четыре возвращают итераторы: значения вычисляются при обходе
-
-</v-clicks>
-
----
-layout: default
----
-
-# `map` возвращает итератор
-
-```py {monaco-run}
 doubled = map(lambda x: x * 2, [1, 2, 3])
-print(type(doubled).__name__)
-print(next(doubled))
-print(list(doubled))
-print(list(doubled))
+print(type(doubled).__name__, list(doubled), list(doubled))
 ```
 
 <v-click>
 
-Тип результата — `map`, то есть итератор. После `next()` в нём остались
-два элемента, их собрал первый `list()`. Второй `list()` вернул пустой
-список: итератор исчерпан.
+Первый `list(it)` собрал остаток `[30]`, второй получил пустой список:
+итератор исчерпан, ошибки при этом нет. `map`, `filter`, `zip` и
+`enumerate` тоже возвращают итераторы. Цикл `for` перехватывает
+`StopIteration` сам, при ручном `next()` исключение получает вызывающий код.
 
 </v-click>
 
@@ -272,226 +143,56 @@ layout: default
 
 # Свой итератор: `__iter__` и `__next__`
 
-Чтобы класс стал итератором, достаточно двух методов. `__next__` возвращает
-следующий элемент или поднимает `StopIteration`. `__iter__` возвращает сам
-объект.
+```py {monaco-run} {autorun:false}
+class Countdown:
+    def __init__(self, start):
+        self.current = start
+    def __iter__(self):
+        return self
+    def __next__(self):
+        if self.current <= 0:
+            raise StopIteration
+        self.current -= 1
+        return self.current + 1
+
+c = Countdown(3)
+print(list(c), list(c))
+```
+
+<v-click>
+
+`__next__` возвращает следующий элемент или поднимает `StopIteration`,
+`__iter__` возвращает сам объект. Поэтому второй обход того же объекта пуст.
+Для многократного обхода `__iter__` создаёт новый итератор при каждом
+вызове, например `return iter(range(self.start, 0, -1))`. Так устроены списки.
+
+</v-click>
+
+---
+layout: default
+---
+
+# Генераторная функция
+
+Обычная функция выполняет тело до `return` и теряет локальные переменные.
+Итератор-класс требует атрибутов состояния и ручного `StopIteration`.
+Генераторная функция записывает то же обычным кодом:
 
 ```python
-class Countdown:
-    def __init__(self, start):
-        self.current = start
-
-    def __iter__(self):
-        return self
-
-    def __next__(self):
-        if self.current <= 0:
-            raise StopIteration
-        value = self.current
-        self.current -= 1
-        return value
+def count_to(n):
+    i = 1
+    while i <= n:
+        yield i
+        i += 1
 ```
-
----
-layout: default
----
-
-# Живой пример
-
-```py {monaco-run}
-class Countdown:
-    def __init__(self, start):
-        self.current = start
-    def __iter__(self):
-        return self
-    def __next__(self):
-        if self.current <= 0:
-            raise StopIteration
-        value = self.current
-        self.current -= 1
-        return value
-
-for x in Countdown(3):
-    print(x)
-```
-
-<v-click>
-
-Объект `Countdown(3)` хранит позицию в атрибуте `current`. Цикл `for`
-вызывает `__iter__`, затем `__next__` до тех пор, пока не будет поднято
-`StopIteration`.
-
-</v-click>
-
----
-layout: default
----
-
-# Найдите ошибку
-
-Класс `Countdown` — тот же, что на предыдущих слайдах.
-
-```python
-countdown = Countdown(3)
-
-print("первый обход")
-for x in countdown:
-    print(x)
-
-print("второй обход")
-for x in countdown:
-    print(x)
-```
-
-Ожидается, что оба цикла напечатают 3, 2, 1. Что выведет код на самом деле?
-
----
-layout: default
----
-
-# Разбор
-
-```py {monaco-run}
-class Countdown:
-    def __init__(self, start):
-        self.current = start
-    def __iter__(self):
-        return self
-    def __next__(self):
-        if self.current <= 0:
-            raise StopIteration
-        value = self.current
-        self.current -= 1
-        return value
-
-countdown = Countdown(3)
-print(list(countdown))
-print(list(countdown))
-```
-
-<v-click>
-
-Первый проход довёл `current` до нуля, и объект остался в этом состоянии.
-`__iter__` возвращает `self`, то есть тот же объект с тем же состоянием:
-нового итератора никто не создаёт, и второй проход сразу получает
-`StopIteration`.
-
-</v-click>
-
----
-layout: default
----
-
-# Как исправить
-
-Нужно разделить две роли. Итерируемый объект хранит исходные данные и при
-каждом `iter()` создаёт новый итератор. Итератор хранит только текущую
-позицию.
-
-```py {monaco-run}
-class Countdown:
-    def __init__(self, start):
-        self.start = start
-
-    def __iter__(self):
-        return iter(range(self.start, 0, -1))
-
-countdown = Countdown(3)
-print(list(countdown))
-print(list(countdown))
-```
-
-<v-click>
-
-Теперь `__iter__` при каждом обходе возвращает свежий итератор (здесь —
-итератор от `range`), и оба прохода дают `[3, 2, 1]`. Так устроены списки
-и другие встроенные контейнеры.
-
-</v-click>
-
----
-layout: center
----
-
-# От класса — к генератору
-
-Класс-итератор требует отдельных методов, хранения состояния и ручного
-`StopIteration`. Для типовых случаев в Python есть более короткая запись —
-генераторы.
-
----
-layout: default
----
-
-# Напоминание: обычная функция
 
 <v-clicks>
 
-- Вызов функции выполняет её тело от начала до `return`
-- Локальные переменные создаются при вызове и исчезают при возврате
-- Следующий вызов начинается с чистого листа
+- Вызов функции с `yield` возвращает объект-генератор, тело не запускается
+- Каждый `next()` выполняет код до очередного `yield`
+- `yield` отдаёт значение и приостанавливает функцию, переменные сохраняются
 
 </v-clicks>
-
----
-layout: default
----
-
-# Какую проблему решают генераторы
-
-Итератор в виде класса состоит из трёх частей: состояние в атрибутах,
-метод `__next__` с проверкой конца и ручной `raise StopIteration`. Для
-обычной последовательности значений такая запись избыточна.
-
-Генераторная функция выражает то же самое обычным кодом с `yield`.
-Протокол итератора Python реализует сам.
-
----
-layout: default
----
-
-# Функция с `yield`
-
-```python
-def count_to(n):
-    i = 1
-    while i <= n:
-        yield i
-        i += 1
-```
-
-Если в теле функции есть `yield`, она становится генераторной. Вызов такой
-функции возвращает объект-генератор, а тело ещё не запускается. Код
-выполняется порциями при вызовах `next()`. Оператор `yield` отдаёт значение и
-приостанавливает функцию, сохраняя все локальные переменные.
-
----
-layout: default
----
-
-# Первый генератор
-
-```py {monaco-run}
-def count_to(n):
-    i = 1
-    while i <= n:
-        yield i
-        i += 1
-
-g = count_to(3)
-print(type(g).__name__)
-print(next(g))
-print(next(g))
-print(list(g))
-```
-
-<v-click>
-
-Вызов `count_to(3)` вернул объект типа `generator`, код функции при этом
-не выполнялся. Два `next()` взяли значения 1 и 2, а `list(g)` собрал
-оставшееся: `[3]`.
-
-</v-click>
 
 ---
 layout: default
@@ -515,52 +216,27 @@ clicks: 3
 layout: default
 ---
 
-# Порядок выполнения вживую
+# Первый генератор вживую
 
-```py {monaco-run}
-def gen():
-    print("старт")
-    yield 1
-    print("между")
-    yield 2
-    print("конец")
+```py {monaco-run} {autorun:false}
+def count_to(n):
+    i = 1
+    while i <= n:
+        yield i
+        i += 1
 
-g = gen()
-print("генератор создан")
-print(next(g))
-print(next(g))
-```
-
-<v-click>
-
-Строки «старт» и «между» напечатаны только в момент соответствующих
-`next()`. Третий вызов `next(g)` выполнил бы `print("конец")` и поднял
-`StopIteration`.
-
-</v-click>
-
----
-layout: default
----
-
-# Генератор — это итератор
-
-Генератор уже содержит `__iter__` и `__next__`, поэтому его принимают
-`for`, `list()`, `sum()` и любые другие места, где ждут итерируемый
-объект. Как у любого итератора, обход у него один.
-
-```py {monaco-run}
-g = (x for x in range(3))
+g = count_to(3)
+print(type(g).__name__, next(g), next(g))
+print(list(g), list(g))
 print(iter(g) is g)
-print(hasattr(g, "__next__"))
-print(list(g))
-print(list(g))
 ```
 
 <v-click>
 
-`iter(g) is g` истинно: как и положено итератору, `__iter__` возвращает
-сам объект. Второй `list(g)` пуст, потому что первый исчерпал генератор.
+Вызов `count_to(3)` вернул объект типа `generator`. Генератор — это
+итератор: `__iter__` возвращает сам объект, обход у него один. Поэтому
+генератор принимают `for`, `list()`, `sum()` и любые другие места, где ждут
+итерируемый объект.
 
 </v-click>
 
@@ -570,55 +246,22 @@ layout: default
 
 # Генераторное выражение
 
-Для простых случаев генератор записывается как выражение: круглые скобки
-вместо квадратных.
+Простой генератор записывается выражением: круглые скобки вместо
+квадратных. Если выражение — единственный аргумент функции, вторые скобки
+не нужны: `sum(x * x for x in range(5))`.
 
-```python
-squares_list = [x * x for x in range(5)]   # список
-squares_gen = (x * x for x in range(5))    # генератор
-```
-
-Если генераторное выражение — единственный аргумент функции, внешние
-скобки можно опустить: `sum(x * x for x in range(5))`.
-
----
-layout: default
----
-
-# Выражение и включение рядом
-
-```py {monaco-run}
+```py {monaco-run} {autorun:false}
 squares_list = [x * x for x in range(5)]
 squares_gen = (x * x for x in range(5))
 print(type(squares_list).__name__, type(squares_gen).__name__)
-print(sum(squares_gen))
-print(sum(squares_gen))
+print(sum(squares_gen), sum(squares_gen))
 ```
 
 <v-click>
 
-Типы разные: `list` и `generator`. Первый `sum` вернул 30, второй — 0:
-генератор после первого прохода исчерпан.
+Первый `sum` вернул 30, второй — 0: генератор исчерпан первым проходом.
 
 </v-click>
-
----
-layout: default
----
-
-# Ленивые вычисления
-
-Значение вычисляется в момент запроса. Заранее ничего не считается и не
-хранится. Следствия:
-
-<v-clicks>
-
-- В памяти находится только текущее значение
-- Первый элемент доступен сразу, без расчёта остальных
-- Последовательность может быть бесконечной
-- Побочные эффекты внутри генератора (например, `print`) происходят в момент запроса значения
-
-</v-clicks>
 
 ---
 layout: default
@@ -627,8 +270,9 @@ clicks: 6
 
 # Память: список и генератор
 
-Список хранит все элементы одновременно. Генератор держит одно текущее
-значение.
+Генератор вычисляет значение в момент запроса. В памяти находится только
+текущее значение, первый элемент доступен сразу, а последовательность может
+быть бесконечной.
 
 <LazyVsEager :step="$clicks" />
 
@@ -636,27 +280,27 @@ clicks: 6
 layout: default
 ---
 
-# Размер объекта: `sys.getsizeof`
+# Измерение памяти: `tracemalloc`
 
-```py {monaco-run}
-import sys
+Модуль `tracemalloc` отслеживает память, которую выделяет Python.
 
-small_list = [x for x in range(10)]
-small_gen = (x for x in range(10))
-big_list = [x for x in range(1_000_000)]
-big_gen = (x for x in range(1_000_000))
+```python
+import tracemalloc
 
-print("10 элементов:", sys.getsizeof(small_list), sys.getsizeof(small_gen))
-print("1 000 000 элементов:", sys.getsizeof(big_list), sys.getsizeof(big_gen))
+tracemalloc.start()
+total = sum([x * x for x in range(1_000_000)])
+current, peak = tracemalloc.get_traced_memory()
+tracemalloc.stop()
+print(f"пик: {peak / 2**20:.1f} МБ")
 ```
+
+Реальный прогон: со списком пик 38.6 МБ, с генератором
+`sum(x * x for x in range(1_000_000))` — 0.0 МБ.
 
 <v-click>
 
-Размер списка растёт вместе с числом элементов, размер генератора
-остаётся постоянным. На десяти элементах выигрыша нет: сам объект-генератор
-занимает порядка сотни байт. Функция `getsizeof` считает только сам
-контейнер, без объектов внутри, поэтому реальная разница для списка ещё
-больше.
+`sys.getsizeof` показывает размер самого объекта без содержимого: список
+из миллиона элементов — 8448728 байт, генератор — 192 байта при любой длине.
 
 </v-click>
 
@@ -664,52 +308,12 @@ print("1 000 000 элементов:", sys.getsizeof(big_list), sys.getsizeof(bi
 layout: default
 ---
 
-# Измерение через `tracemalloc`
+# Бесконечный генератор
 
-Модуль `tracemalloc` отслеживает память, которую выделяет Python.
-`get_traced_memory()` возвращает текущий и пиковый объём с момента вызова
-`start()`.
+Пока значения не запрашивают, генератор ничего не вычисляет, поэтому он
+может не заканчиваться. Конечную часть берёт `itertools.islice(итератор, n)`.
 
-```python
-import tracemalloc
-
-tracemalloc.start()
-total = sum([x * x for x in range(1_000_000)])   # со списком
-_, peak = tracemalloc.get_traced_memory()
-tracemalloc.stop()
-print(f"пик: {peak / 1024 / 1024:.1f} МБ")
-```
-
-Тот же код с `sum(x * x for x in range(1_000_000))` вместо списка. Реальный
-результат прогона: список — пик 38.6 МБ, генератор — пик 0.0 МБ.
-
----
-layout: default
----
-
-# Бесконечные последовательности
-
-Генератор может не заканчиваться: пока значения не запрашивают, он ничего
-не вычисляет.
-
-```python
-def naturals():
-    n = 1
-    while True:
-        yield n
-        n += 1
-```
-
-Чтобы взять конечную часть, используют `itertools.islice(итератор, n)` —
-функцию, которая возвращает первые `n` элементов.
-
----
-layout: default
----
-
-# Бесконечный генератор вживую
-
-```py {monaco-run}
+```py {monaco-run} {autorun:false}
 from itertools import islice
 
 def naturals():
@@ -723,9 +327,8 @@ print(list(islice(naturals(), 5)))
 
 <v-click>
 
-Цикл `while True` не зависает: код выполняется ровно столько раз,
-сколько значений запросили. Вызов `list(naturals())` без `islice` не
-завершился бы никогда.
+Цикл `while True` выполнился ровно столько раз, сколько значений запросили.
+Вызов `list(naturals())` без `islice` не завершился бы никогда.
 
 </v-click>
 
@@ -747,7 +350,7 @@ layout: default
 
 # Конвейер вживую
 
-```py {monaco-run}
+```py {monaco-run} {autorun:false}
 def numbers():
     for n in range(1, 5):
         print("источник:", n)
@@ -776,21 +379,6 @@ for result in times_ten(evens(numbers())):
 
 ---
 layout: default
----
-
-# Когда генератор не подходит
-
-<v-clicks>
-
-- Нет длины: `len(g)` даёт `TypeError: object of type 'generator' has no len()`
-- Нет индексации: `g[0]` даёт `TypeError: 'generator' object is not subscriptable`
-- Обход один: для повторного прохода нужен список или новый вызов генераторной функции
-- Назад вернуться нельзя: значения, уже выданные генератором, нигде не хранятся
-
-</v-clicks>
-
----
-layout: default
 clicks: 5
 ---
 
@@ -805,99 +393,40 @@ clicks: 5
 layout: default
 ---
 
-# `yield from` вживую
+# Когда генератор не подходит
 
-```py {monaco-run}
-def chain_two():
-    yield from [1, 2]
-    yield from "ab"
+<v-clicks>
 
-print(list(chain_two()))
+- Нет длины: `len(g)` даёт `TypeError`
+- Нет индексации: `g[0]` даёт `TypeError`
+- Обход один, вернуться назад нельзя
 
-def countdown(n):
-    while n > 0:
-        yield n
-        n -= 1
-
-def with_finish(n):
-    yield from countdown(n)
-    yield "старт"
-
-print(list(with_finish(3)))
-```
+</v-clicks>
 
 <v-click>
-
-Первый пример склеивает две последовательности. Второй показывает
-делегирование другому генератору: `with_finish` отдаёт все значения
-`countdown`, а затем добавляет своё.
-
-</v-click>
-
----
-layout: default
----
-
-# Найдите ошибку
 
 ```python
 def average(numbers):
-    total = sum(numbers)
-    count = len(list(numbers))
+    total = sum(numbers)            # генератор исчерпан здесь
+    count = len(list(numbers))      # пустой список, count = 0
     return total / count
 
-data = (x for x in [2, 4, 6])
-print(average(data))
+average(x for x in [2, 4, 6])      # ZeroDivisionError
 ```
 
-Ожидается 4.0. Что произойдёт при запуске?
-
----
-layout: default
----
-
-# Разбор
-
-```py {monaco-run}
-def average(numbers):
-    total = sum(numbers)
-    count = len(list(numbers))
-    return total / count
-
-data = (x for x in [2, 4, 6])
-try:
-    print(average(data))
-except ZeroDivisionError as e:
-    print("ZeroDivisionError:", e)
-```
-
-<v-click>
-
-`sum(numbers)` прошёл по генератору до конца и исчерпал его. После этого
-`list(numbers)` получил пустой результат, `count` стал нулём, а деление на
-него дало `ZeroDivisionError`. Исправление: сохранить значения один раз,
-`values = list(numbers)`, и работать с этим списком.
+`values = list(numbers)` сохраняет значения один раз для повторных проходов.
 
 </v-click>
 
 ---
-layout: center
----
-
-# От ручных генераторов — к готовым блокам
-
-Генераторы строятся вручную. Для типовых операций в стандартной
-библиотеке уже есть готовые ленивые блоки — модуль `itertools`.
-
----
 layout: default
 ---
 
-# Зачем `itertools`
+# `itertools`: готовые ленивые блоки
 
-Модуль `itertools` — набор функций, которые принимают итерируемые объекты
-и возвращают итераторы. Все они ленивые и соединяются в цепочки так же,
-как генераторы. Подключение — обычным импортом: `from itertools import ...`.
+Для типовых операций с итераторами в стандартной библиотеке есть модуль
+`itertools`. Его функции принимают итерируемые объекты, возвращают
+итераторы и соединяются в цепочки так же, как генераторы.
 
 <v-clicks>
 
@@ -912,47 +441,22 @@ layout: default
 layout: default
 ---
 
-# `count`, `cycle`, `repeat`
+# Источники, срез и склейка
 
-- `count(start, step)` — числа с шагом, без конца
-- `cycle(seq)` — бесконечное повторение последовательности по кругу
-- `repeat(x, n)` — значение `x` ровно `n` раз; без `n` — бесконечно
+```py {monaco-run} {autorun:false}
+from itertools import count, cycle, repeat, islice, chain
 
-```py {monaco-run}
-from itertools import count, cycle, repeat, islice
-
-print(list(islice(count(10, 5), 4)))
-print(list(islice(cycle("AB"), 5)))
-print(list(repeat("x", 3)))
+print(list(islice(count(10, 5), 4)))      # 10, 15, 20, ... без конца
+print(list(islice(cycle("AB"), 5)))       # по кругу без конца
+print(list(repeat("x", 3)))               # значение ровно 3 раза
+print(list(islice("abcdef", 2, 5)))       # срез итератора
+print(list(chain([1, 2], (3, 4), "ab")))  # склейка подряд
 ```
 
 <v-click>
 
-Первые два вызова бесконечны, поэтому ограничены через `islice`. У
-`repeat` число повторений задано явно.
-
-</v-click>
-
----
-layout: default
----
-
-# `islice` и `chain`
-
-- `islice(it, stop)` и `islice(it, start, stop)` — срез итератора; отрицательных индексов нет
-- `chain(a, b, ...)` — последовательное соединение нескольких итерируемых
-
-```py {monaco-run}
-from itertools import islice, chain
-
-print(list(islice("abcdef", 2, 5)))
-print(list(chain([1, 2], (3, 4), "ab")))
-```
-
-<v-click>
-
-`islice("abcdef", 2, 5)` берёт элементы с индексами 2, 3 и 4. `chain`
-склеивает список, кортеж и строку в одну последовательность без создания
+Бесконечные `count` и `cycle` ограничены через `islice`. У `islice` нет
+отрицательных индексов. `chain` соединяет список, кортеж и строку без
 промежуточного списка.
 
 </v-click>
@@ -967,7 +471,7 @@ layout: default
 - `permutations(seq, r)` — упорядоченные выборки по `r` элементов
 - `combinations(seq, r)` — неупорядоченные выборки по `r` элементов
 
-```py {monaco-run}
+```py {monaco-run} {autorun:false}
 from itertools import product, permutations, combinations
 
 print(list(product([1, 2], "ab")))
@@ -989,33 +493,11 @@ clicks: 2
 
 # `groupby`: группируются соседи
 
-`groupby(seq)` объединяет подряд идущие одинаковые элементы. Если
-одинаковые элементы разбросаны по последовательности, получится несколько
-групп с одним и тем же ключом.
+`groupby(seq)` объединяет подряд идущие одинаковые элементы. Для группировки
+по всему набору данных его предварительно сортируют по тому же ключу:
+`groupby(sorted(data))`.
 
 <GroupbyDemo :step="$clicks" />
-
----
-layout: default
----
-
-# `groupby` вживую
-
-```py {monaco-run}
-from itertools import groupby
-
-data = "AAABBBAA"
-print([(k, len(list(g))) for k, g in groupby(data)])
-print([(k, len(list(g))) for k, g in groupby(sorted(data))])
-```
-
-<v-click>
-
-Без сортировки получились три группы, ключ `'A'` встретился дважды. После
-`sorted()` одинаковые элементы стоят рядом, групп две. Для группировки
-по всему набору данных предварительно сортируют по тому же ключу.
-
-</v-click>
 
 ---
 layout: default
@@ -1026,7 +508,7 @@ layout: default
 Бесконечный источник, две стадии и ограничитель: вся цепочка остаётся
 ленивой.
 
-```py {monaco-run}
+```py {monaco-run} {autorun:false}
 from itertools import count, islice, accumulate, takewhile
 
 evens = (n for n in count(1) if n % 2 == 0)
