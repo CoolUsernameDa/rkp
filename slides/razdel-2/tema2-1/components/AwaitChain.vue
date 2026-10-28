@@ -5,11 +5,11 @@ import { computed } from 'vue'
 const STEPS = [
   { frames: [['main()', 'active']], dir: null, note: 'Цикл запускает задачу main().' },
   { frames: [['main()', 'paused'], ['fetch()', 'active']], dir: 'down', note: 'main выполняет await fetch(): корутина fetch начинает работу внутри той же задачи.' },
-  { frames: [['main()', 'paused'], ['fetch()', 'paused'], ['sleep(1)', 'future']], dir: 'down', note: 'fetch выполняет await asyncio.sleep(1). Сон — объект Future, который станет готов через 1 с.' },
+  { frames: [['main()', 'paused'], ['fetch()', 'paused'], ['sleep(1)', 'future']], dir: 'down', note: 'fetch выполняет await asyncio.sleep(1). asyncio.sleep возвращает объект Future, который станет готов через 1 с.' },
   { frames: [['main()', 'paused'], ['fetch()', 'paused'], ['sleep(1)', 'future']], dir: 'up', loopFree: true, note: 'Future не готов. Приостановка поднимается по всей цепочке await до цикла: задача main целиком ждёт, цикл свободен.' },
   { frames: [['main()', 'paused'], ['fetch()', 'active'], ['sleep(1)', 'done']], dir: 'down', note: 'Через 1 с Future готов. Цикл возобновляет задачу, управление спускается обратно в fetch.' },
   { frames: [['main()', 'active'], ['fetch()', 'done']], dir: 'up', note: 'fetch завершилась, её return стал результатом await в main.' },
-  { frames: [['main()', 'done']], dir: null, note: 'main завершилась — задача выполнена.' },
+  { frames: [['main()', 'done']], dir: null, note: 'main завершилась, задача выполнена.' },
 ]
 
 const props = defineProps({ step: { type: Number, default: 0 } })
@@ -20,7 +20,7 @@ const label = { active: 'выполняется', paused: 'ждёт await', futu
 <template>
   <div class="chain">
     <div class="stack">
-      <div class="loopbox" :class="{ free: s.loopFree }">Цикл событий{{ s.loopFree ? ' — свободен' : '' }}</div>
+      <div class="loopbox" :class="{ free: s.loopFree }">Цикл событий{{ s.loopFree ? ': свободен' : '' }}</div>
       <div v-for="(f, i) in s.frames" :key="f[0]" class="frame" :class="f[1]" :style="{ marginLeft: (i + 1) * 1.6 + 'em' }">
         <span class="arrow">{{ i === 0 ? '└ задача' : '└ await' }}</span>
         <code>{{ f[0] }}</code>
@@ -39,7 +39,7 @@ const label = { active: 'выполняется', paused: 'ждёт await', futu
 </template>
 
 <style scoped>
-.chain { display: grid; grid-template-columns: 1.1fr 1fr; gap: 1.2em; font-size: 0.72em; margin-top: 0.6em; align-items: start; }
+.chain { display: grid; grid-template-columns: 1.1fr 1fr; gap: 1.2em; font-size: 0.78em; margin-top: 0.6em; align-items: start; }
 .stack { display: flex; flex-direction: column; gap: 0.45em; }
 .loopbox { padding: 0.45em 0.8em; border-radius: 0.4em; background: rgba(128, 128, 128, 0.18); border: 2px solid rgba(128, 128, 128, 0.6); font-weight: 700; transition: all 0.25s; }
 .loopbox.free { border-color: #22c55e; background: rgba(34, 197, 94, 0.18); }

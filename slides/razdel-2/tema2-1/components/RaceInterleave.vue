@@ -7,7 +7,7 @@ const PLAIN = {
     { counter: 0, A: { line: null }, B: { line: null }, active: null, note: 'Общий счётчик равен 0. Две задачи выполняют один и тот же код.' },
     { counter: 0, A: { line: 0, value: 0 }, B: { line: null }, active: 'A', note: 'A читает counter: value = 0.' },
     { counter: 0, A: { line: 1, value: 0, paused: true }, B: { line: null }, active: null, note: 'A доходит до await и отдаёт управление циклу.' },
-    { counter: 0, A: { line: 1, value: 0, paused: true }, B: { line: 0, value: 0 }, active: 'B', note: 'B читает counter — он всё ещё 0.' },
+    { counter: 0, A: { line: 1, value: 0, paused: true }, B: { line: 0, value: 0 }, active: 'B', note: 'B читает counter, а там всё ещё 0.' },
     { counter: 0, A: { line: 1, value: 0, paused: true }, B: { line: 1, value: 0, paused: true }, active: null, note: 'B тоже доходит до await.' },
     { counter: 1, A: { line: 2, value: 0 }, B: { line: 1, value: 0, paused: true }, active: 'A', note: 'A продолжает: counter = 0 + 1 = 1.' },
     { counter: 1, A: { line: null, done: true }, B: { line: 2, value: 0 }, active: 'B', lost: true, note: 'B записывает свою устаревшую копию: counter = 0 + 1 = 1. Одно увеличение потеряно.' },
@@ -59,7 +59,7 @@ const s = computed(() => data.value.steps[Math.max(0, Math.min(props.step, data.
 </template>
 
 <style scoped>
-.race { display: grid; grid-template-columns: 1fr 1fr 0.8fr; gap: 0.7em 1em; font-size: 0.7em; margin-top: 0.5em; }
+.race { display: grid; grid-template-columns: 1fr 1fr 0.8fr; gap: 0.7em 1em; font-size: 0.76em; margin-top: 0.5em; }
 .task { border: 2px solid rgba(128, 128, 128, 0.4); border-radius: 0.5em; padding: 0.4em 0.6em; transition: all 0.25s; }
 .task.active { border-color: #22c55e; }
 .head { font-weight: 700; margin-bottom: 0.3em; display: flex; gap: 0.5em; align-items: center; flex-wrap: wrap; }

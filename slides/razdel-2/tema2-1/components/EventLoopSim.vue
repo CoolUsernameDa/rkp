@@ -16,7 +16,7 @@ const PRESETS = {
       { t: '0.0', ready: ['A', 'B'], run: null, wait: [], line: 5, note: 'gather создал две задачи и поставил их в очередь готовых.' },
       { t: '0.0', ready: ['B'], run: 'A', wait: [], line: 1, out: 'старт A', note: 'Цикл запускает A. Она печатает строку и доходит до await.' },
       { t: '0.0', ready: ['B'], run: null, wait: [['A', 'таймер 1.0 с']], line: 2, note: 'A приостановлена: заведён таймер, управление вернулось циклу.' },
-      { t: '0.0', ready: [], run: 'B', wait: [['A', 'таймер 1.0 с']], line: 1, out: 'старт B', note: 'Цикл берёт следующую готовую задачу — B.' },
+      { t: '0.0', ready: [], run: 'B', wait: [['A', 'таймер 1.0 с']], line: 1, out: 'старт B', note: 'Цикл берёт следующую готовую задачу, B.' },
       { t: '0.0', ready: [], run: null, wait: [['A', 'таймер 1.0 с'], ['B', 'таймер 0.5 с']], line: 2, note: 'Готовых задач нет. Цикл спит до ближайшего таймера и процессор не занимает.' },
       { t: '0.5', ready: ['B'], run: null, wait: [['A', 'таймер 1.0 с']], line: null, note: 'Сработал таймер B: задача снова в очереди готовых.' },
       { t: '0.5', ready: [], run: 'B', wait: [['A', 'таймер 1.0 с']], line: 3, out: 'готово B', note: 'B продолжает работу со строки после await и завершается.' },
@@ -100,7 +100,7 @@ const outs = computed(() => data.value.steps.slice(0, idx.value + 1).filter((x) 
 </template>
 
 <style scoped>
-.loop { display: grid; grid-template-columns: 1fr 1.25fr; gap: 0.7em 1em; font-size: 0.66em; margin-top: 0.4em; }
+.loop { display: grid; grid-template-columns: 1fr 1.25fr; gap: 0.7em 1em; font-size: 0.72em; margin-top: 0.4em; }
 .code { background: #1e1e2e; color: #cdd6f4; border-radius: 0.4em; padding: 0.5em 0.4em; font-family: monospace; font-size: 0.92em; }
 .line { white-space: pre; padding: 0.1em 0.4em; border-radius: 0.25em; }
 .line.on { background: rgba(59, 130, 246, 0.4); }
@@ -108,7 +108,7 @@ const outs = computed(() => data.value.steps.slice(0, idx.value + 1).filter((x) 
 .clock { font-family: monospace; font-weight: 700; color: #3b82f6; }
 .cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5em; }
 .col { border: 1px solid rgba(128, 128, 128, 0.5); border-radius: 0.4em; padding: 0.35em 0.5em; min-height: 3.6em; }
-.cap { font-size: 0.8em; opacity: 0.65; margin-bottom: 0.25em; }
+.cap { font-size: 0.85em; opacity: 0.75; margin-bottom: 0.25em; }
 .chips { display: flex; flex-wrap: wrap; gap: 0.3em; }
 .col-chips { flex-direction: column; align-items: flex-start; }
 .chip { font-family: monospace; border-radius: 0.3em; padding: 0.05em 0.5em; border: 1px solid; transition: all 0.25s; }

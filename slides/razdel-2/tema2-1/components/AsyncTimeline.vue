@@ -127,9 +127,10 @@ const wid = (a, b, m) => ((b - a) / scaleOf(m)) * 100 + '%'
 </template>
 
 <style scoped>
-.tl { font-size: 0.66em; display: flex; flex-direction: column; gap: 0.7em; margin-top: 0.4em; }
-.tl.compact { font-size: 0.58em; gap: 0.45em; }
-.tl.compact .row { margin: 0.12em 0; }
+.tl { font-size: 0.72em; display: flex; flex-direction: column; gap: 0.7em; margin-top: 0.4em; }
+.tl.compact { font-size: 0.64em; gap: 0.35em; }
+.tl.compact .row { margin: 0.06em 0; }
+.tl.compact .cap { margin-top: 0.1em; }
 .title { font-weight: 700; margin-bottom: 0.2em; }
 .row { display: flex; align-items: center; gap: 0.6em; margin: 0.2em 0; }
 .lab { width: 6.5em; flex: none; font-family: monospace; text-align: right; }
@@ -139,7 +140,7 @@ const wid = (a, b, m) => ((b - a) / scaleOf(m)) * 100 + '%'
 .seg.wait { background: repeating-linear-gradient(45deg, rgba(249, 115, 22, 0.55) 0 6px, rgba(249, 115, 22, 0.2) 6px 12px); }
 .seg.block { background: #ef4444; }
 .axis .track { background: none; height: 1em; }
-.tick { position: absolute; transform: translateX(-50%); font-size: 0.8em; opacity: 0.7; white-space: nowrap; }
+.tick { position: absolute; transform: translateX(-50%); font-size: 0.85em; opacity: 0.75; white-space: nowrap; }
 .cap { opacity: 0.85; margin-top: 0.2em; padding-left: 7.1em; }
 .legend { display: flex; gap: 1.4em; opacity: 0.85; font-size: 0.9em; }
 .legend i.seg { position: relative; display: inline-block; width: 1.6em; height: 0.8em; vertical-align: middle; }

@@ -40,7 +40,7 @@ const visited = computed(() => new Set(STEPS.slice(0, Math.min(props.step, 5) + 
 </template>
 
 <style scoped>
-.ts { font-size: 0.72em; margin-top: 0.5em; display: flex; flex-direction: column; gap: 0.7em; }
+.ts { font-size: 0.78em; margin-top: 0.5em; display: flex; flex-direction: column; gap: 0.7em; }
 .graph { position: relative; display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: auto auto; gap: 1.4em 3.2em; }
 .node { text-align: center; padding: 0.6em 0.4em; border-radius: 0.5em; border: 2px solid rgba(128, 128, 128, 0.5); opacity: 0.55; transition: all 0.25s; }
 .node.seen { opacity: 0.85; }

@@ -36,10 +36,10 @@ const s = computed(() => STEPS[Math.max(0, Math.min(props.step, STEPS.length - 1
 </template>
 
 <style scoped>
-.sem { display: grid; grid-template-columns: 1fr 1.3fr 1fr; gap: 0.7em 1em; font-size: 0.72em; margin-top: 0.5em; align-items: start; }
+.sem { display: grid; grid-template-columns: 1fr 1.3fr 1fr; gap: 0.7em 1em; font-size: 0.78em; margin-top: 0.5em; align-items: start; }
 .area, .gate { border: 2px solid rgba(128, 128, 128, 0.4); border-radius: 0.5em; padding: 0.5em 0.7em; min-height: 5em; }
 .gate { border-color: #3b82f6; }
-.cap { font-size: 0.85em; opacity: 0.7; margin-bottom: 0.4em; }
+.cap { font-size: 0.9em; opacity: 0.75; margin-bottom: 0.4em; }
 .clock { font-family: monospace; color: #3b82f6; font-weight: 700; margin-left: 0.5em; opacity: 1; }
 .chips { display: flex; flex-wrap: wrap; gap: 0.35em; }
 .chip { font-family: monospace; border-radius: 0.3em; padding: 0.1em 0.55em; border: 1px solid; }

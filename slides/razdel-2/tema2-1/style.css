@@ -12,3 +12,17 @@
 .slidev-layout.default h1 {
   flex-shrink: 0;
 }
+
+/* 2.1: читаемость на проекторе */
+:root {
+  --slidev-code-font-size: 15px;
+  --slidev-code-line-height: 22px;
+}
+/* Абзац сразу под заголовком несёт содержание: делаем его контрастным */
+.slidev-layout h1 + p { opacity: 0.75; }
+/* Единый размер таблиц на всех слайдах */
+.slidev-layout table { font-size: 0.82em; }
+.slidev-layout td, .slidev-layout th { padding-top: 0.35em; padding-bottom: 0.35em; }
+/* Нижний отступ последнего блока не должен вызывать прокрутку слайда */
+.slidev-layout.default > :last-child,
+.slidev-layout.default > :last-child > :last-child { margin-bottom: 0 !important; }

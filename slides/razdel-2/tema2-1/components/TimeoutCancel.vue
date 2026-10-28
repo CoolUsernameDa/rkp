@@ -44,7 +44,7 @@ const pct = (v) => (v / 2) * 100 + '%'
 </template>
 
 <style scoped>
-.to { font-size: 0.7em; margin-top: 0.6em; display: flex; flex-direction: column; gap: 0.4em; }
+.to { font-size: 0.76em; margin-top: 0.6em; display: flex; flex-direction: column; gap: 0.4em; }
 .row { display: flex; align-items: center; gap: 0.6em; }
 .lab { width: 9.5em; white-space: nowrap; text-align: right; font-family: monospace; flex: none; }
 .track { position: relative; flex: 1; height: 1.6em; background: rgba(128, 128, 128, 0.12); border-radius: 0.25em; }
@@ -54,7 +54,7 @@ const pct = (v) => (v / 2) * 100 + '%'
 .flag { position: absolute; top: 50%; transform: translate(0.4em, -50%); font-family: monospace; font-weight: 700; padding: 0 0.4em; border-radius: 0.3em; white-space: nowrap; }
 .flag.bad { background: #ef4444; color: #fff; }
 .axis .track { background: none; height: 1.2em; }
-.tick { position: absolute; transform: translateX(-50%); font-size: 0.8em; opacity: 0.7; white-space: nowrap; }
+.tick { position: absolute; transform: translateX(-50%); font-size: 0.85em; opacity: 0.75; white-space: nowrap; }
 .deadline { position: absolute; bottom: 1.2em; width: 2px; height: 5.4em; background: #ef4444; }
 .now { display: flex; gap: 1em; padding-left: 10.1em; }
 .now code { background: rgba(128, 128, 128, 0.15); padding: 0.1em 0.5em; border-radius: 0.3em; }
