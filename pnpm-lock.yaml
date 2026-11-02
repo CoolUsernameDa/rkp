@@ -123,6 +123,21 @@ importers:
         specifier: latest
         version: 2.2.2(qrcode@1.5.4)(vue@3.5.44(typescript@6.0.3))
 
+  slides/razdel-2/tema2-2:
+    dependencies:
+      '@slidev/cli':
+        specifier: 'catalog:'
+        version: 53.0.0(@nuxt/kit@3.21.11)(@oxc-project/types@0.154.0)(@types/markdown-it@14.2.0)(@types/node@22.20.5)(@vitejs/devtools-kit@0.7.6(cac@7.1.0)(crossws@0.4.15(srvx@1.0.5))(srvx@1.0.5)(vite@8.3.4(@types/node@22.20.5)(jiti@2.7.0)(yaml@2.9.1)))(@vue/compiler-sfc@3.5.44)(cac@7.1.0)(crossws@0.4.15(srvx@1.0.5))(lightningcss@1.33.0)(markdown-it@14.3.3)(oxc-parser@0.153.0)(postcss@8.5.30)(rolldown@1.2.14)(srvx@1.0.5)
+      '@slidev/theme-default':
+        specifier: 'catalog:'
+        version: 0.25.0
+      vue:
+        specifier: 'catalog:'
+        version: 3.5.44(typescript@6.0.3)
+      vue-qrcode:
+        specifier: latest
+        version: 2.2.2(qrcode@1.5.4)(vue@3.5.44(typescript@6.0.3))
+
   slides/razdel-3/tema1-1:
     dependencies:
       '@slidev/cli':

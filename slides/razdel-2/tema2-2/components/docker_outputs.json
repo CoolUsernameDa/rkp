@@ -1,0 +1,1398 @@
+{
+ "meta": {
+  "date": "2026-11-02T03:37:19",
+  "host": "Windows-11-10.0.26300-SP0",
+  "python": "3.13.3",
+  "client": "windows/amd64",
+  "server": "linux/amd64",
+  "docker": "29.4.1",
+  "no_pull": false,
+  "total_sec": 106.1,
+  "problems": []
+ },
+ "steps": {
+  "version": {
+   "cmd": "docker version --format \"{{.Client.Os}}/{{.Client.Arch}} -> {{.Server.Os}}/{{.Server.Arch}}\"",
+   "out": [
+    "windows/amd64 -> linux/amd64"
+   ],
+   "rc": 0,
+   "sec": 0.07
+  },
+  "info_os": {
+   "cmd": "docker info --format {{.OperatingSystem}}",
+   "out": [
+    "Docker Desktop"
+   ],
+   "rc": 0,
+   "sec": 0.26
+  },
+  "hello": {
+   "cmd": "docker run --rm hello-world",
+   "out": [
+    "",
+    "Hello from Docker!",
+    "This message shows that your installation appears to be working correctly.",
+    "",
+    "To generate this message, Docker took the following steps:",
+    " 1. The Docker client contacted the Docker daemon.",
+    " 2. The Docker daemon pulled the \"hello-world\" image from the Docker Hub.",
+    "    (amd64)",
+    " 3. The Docker daemon created a new container from that image which runs the",
+    "    executable that produces the output you are currently reading.",
+    " 4. The Docker daemon streamed that output to the Docker client, which sent it",
+    "    to your terminal.",
+    "",
+    "To try something more ambitious, you can run an Ubuntu container with:",
+    " $ docker run -it ubuntu bash",
+    "",
+    "Share images, automate workflows, and more with a free Docker ID:",
+    " https://hub.docker.com/",
+    "",
+    "For more examples and ideas, visit:",
+    " https://docs.docker.com/get-started/"
+   ],
+   "rc": 0,
+   "sec": 0.63
+  },
+  "pull_slim": {
+   "cmd": "docker pull python:3.12-slim",
+   "out": [
+    "3.12-slim: Pulling from library/python",
+    "acca7542dfc7: Pulling fs layer",
+    "3eb771151506: Pulling fs layer",
+    "f574edac59d9: Pulling fs layer",
+    "6fc242d221a6: Pulling fs layer",
+    "acca7542dfc7: Download complete",
+    "3eb771151506: Download complete",
+    "bccc6082da9b: Download complete",
+    "5c4e36918e20: Download complete",
+    "f574edac59d9: Download complete",
+    "6fc242d221a6: Download complete",
+    "6fc242d221a6: Pull complete",
+    "3eb771151506: Pull complete",
+    "acca7542dfc7: Pull complete",
+    "f574edac59d9: Pull complete",
+    "Digest: sha256:aa943ce411423c7582288f18707ff66eddcbaeb510502d747a72aeb34f30d159",
+    "Status: Downloaded newer image for python:3.12-slim",
+    "docker.io/library/python:3.12-slim"
+   ],
+   "rc": 0,
+   "sec": 5.63
+  },
+  "python_info": {
+   "cmd": "docker run --rm python:3.12-slim python -c \"import platform, sys; print(sys.version.split()[0], platform.system(), platform.machine())\"",
+   "out": [
+    "3.12.16 Linux x86_64"
+   ],
+   "rc": 0,
+   "sec": 0.69
+  },
+  "os_release": {
+   "cmd": "docker run --rm python:3.12-slim cat /etc/os-release",
+   "out": [
+    "PRETTY_NAME=\"Debian GNU/Linux 13 (trixie)\"",
+    "NAME=\"Debian GNU/Linux\"",
+    "VERSION_ID=\"13\"",
+    "VERSION=\"13 (trixie)\"",
+    "VERSION_CODENAME=trixie",
+    "DEBIAN_VERSION_FULL=13.7",
+    "ID=debian",
+    "HOME_URL=\"https://www.debian.org/\"",
+    "SUPPORT_URL=\"https://www.debian.org/support\"",
+    "BUG_REPORT_URL=\"https://bugs.debian.org/\""
+   ],
+   "rc": 0,
+   "sec": 0.47
+  },
+  "life_create": {
+   "cmd": "docker create --name life-demo python:3.12-slim python -c \"print('работаю')\"",
+   "out": [
+    "c2b6f91ac99463f07f35ba74afca251c0caa187fbc11a05aff8ef9b1478d1257"
+   ],
+   "rc": 0,
+   "sec": 0.14
+  },
+  "life_ps1": {
+   "cmd": "docker ps -a --filter name=life-demo",
+   "out": [
+    "CONTAINER ID   IMAGE              COMMAND                  CREATED                  STATUS    PORTS     NAMES",
+    "c2b6f91ac994   python:3.12-slim   \"python -c print('ра…\"   Less than a second ago   Created             life-demo"
+   ],
+   "rc": 0,
+   "sec": 0.09
+  },
+  "life_start": {
+   "cmd": "docker start -a life-demo",
+   "out": [
+    "работаю"
+   ],
+   "rc": 0,
+   "sec": 0.42
+  },
+  "life_ps2": {
+   "cmd": "docker ps -a --filter name=life-demo",
+   "out": [
+    "CONTAINER ID   IMAGE              COMMAND                  CREATED                  STATUS                              PORTS     NAMES",
+    "c2b6f91ac994   python:3.12-slim   \"python -c print('ра…\"   Less than a second ago   Exited (0) Less than a second ago             life-demo"
+   ],
+   "rc": 0,
+   "sec": 0.07
+  },
+  "life_rm": {
+   "cmd": "docker rm life-demo",
+   "out": [
+    "life-demo"
+   ],
+   "rc": 0,
+   "sec": 0.07
+  },
+  "build_v1": {
+   "cmd": "docker build -t counter:v1 .",
+   "out": [
+    "#0 building with \"desktop-linux\" instance using docker driver",
+    "",
+    "#1 [internal] load build definition from Dockerfile",
+    "#1 transferring dockerfile: 123B 0.0s done",
+    "#1 DONE 0.0s",
+    "",
+    "#2 [internal] load metadata for docker.io/library/python:3.12-slim",
+    "#2 DONE 0.0s",
+    "",
+    "#3 [internal] load .dockerignore",
+    "#3 transferring context: 2B done",
+    "#3 DONE 0.0s",
+    "",
+    "#4 [internal] load build context",
+    "#4 transferring context: 632B 0.0s done",
+    "#4 DONE 0.1s",
+    "",
+    "#5 [1/3] FROM docker.io/library/python:3.12-slim@sha256:aa943ce411423c7582288f18707ff66eddcbaeb510502d747a72aeb34f30d159",
+    "#5 resolve docker.io/library/python:3.12-slim@sha256:aa943ce411423c7582288f18707ff66eddcbaeb510502d747a72aeb34f30d159 0.0s done",
+    "#5 DONE 0.1s",
+    "",
+    "#6 [2/3] WORKDIR /app",
+    "#6 DONE 0.0s",
+    "",
+    "#7 [3/3] COPY app.py .",
+    "#7 DONE 0.0s",
+    "",
+    "#8 exporting to image",
+    "#8 exporting layers 0.1s done",
+    "#8 exporting manifest sha256:047d69aab7398248aee81569097b4be0659e13e30e2fdbb4002a17c8e284d13a 0.0s done",
+    "#8 exporting config sha256:f6246e8241fe35800820f1039f2243d2a3af871a253c8d93ac2c0feb522ea543 0.0s done",
+    "#8 exporting attestation manifest sha256:0df0d4ecd7d08d8d036ca3f7a8f7ab87b529183de79767286494f172b00390bd 0.0s done",
+    "#8 exporting manifest list sha256:7a34c027f1e14240b94c93c7967e9cf77664d0cfb953c96e94ac46e0a97b91f7 0.0s done",
+    "#8 naming to docker.io/library/counter:v1 done",
+    "#8 unpacking to docker.io/library/counter:v1 0.0s done",
+    "#8 DONE 0.3s",
+    "",
+    "View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/m74pidathzuecbhs07d8nymn0"
+   ],
+   "rc": 0,
+   "sec": 1.06
+  },
+  "run_v1": {
+   "cmd": "docker run -d --name counter-web -p 8080:8000 counter:v1",
+   "out": [
+    "523854ac8e04802391c596f1b45722e15d571a316fd9e73c1a4d60fdb6203c15"
+   ],
+   "rc": 0,
+   "sec": 0.52
+  },
+  "curl_v1": {
+   "cmd": "curl http://localhost:8080",
+   "out": [
+    "Привет из контейнера 523854ac8e04"
+   ],
+   "rc": 200,
+   "sec": 0.52
+  },
+  "ps_v1": {
+   "cmd": "docker ps --filter name=counter-web",
+   "out": [
+    "CONTAINER ID   IMAGE        COMMAND           CREATED        STATUS                  PORTS                                         NAMES",
+    "523854ac8e04   counter:v1   \"python app.py\"   1 second ago   Up Less than a second   0.0.0.0:8080->8000/tcp, [::]:8080->8000/tcp   counter-web"
+   ],
+   "rc": 0,
+   "sec": 0.07
+  },
+  "logs_v1": {
+   "cmd": "docker logs counter-web",
+   "out": [
+    "Сервер слушает порт 8000",
+    "172.17.0.1 - - [02/Nov/2026 00:37:30] \"GET / HTTP/1.1\" 200 -"
+   ],
+   "rc": 0,
+   "sec": 0.06
+  },
+  "exec_hostname": {
+   "cmd": "docker exec counter-web hostname",
+   "out": [
+    "523854ac8e04"
+   ],
+   "rc": 0,
+   "sec": 0.14
+  },
+  "exec_pid1": {
+   "cmd": "docker exec counter-web cat /proc/1/cmdline",
+   "out": [
+    "python app.py "
+   ],
+   "rc": 0,
+   "sec": 0.12
+  },
+  "top_v1": {
+   "cmd": "docker top counter-web",
+   "out": [
+    "UID                 PID                 PPID                C                   STIME               TTY                 TIME                CMD",
+    "root                777                 755                 23                  00:37               ?                   00:00:00            python app.py"
+   ],
+   "rc": 0,
+   "sec": 0.08
+  },
+  "stop_v1": {
+   "cmd": "docker stop counter-web",
+   "out": [
+    "counter-web"
+   ],
+   "rc": 0,
+   "sec": 0.34
+  },
+  "ps_a_v1": {
+   "cmd": "docker ps -a --filter name=counter-web",
+   "out": [
+    "CONTAINER ID   IMAGE        COMMAND           CREATED         STATUS                              PORTS     NAMES",
+    "523854ac8e04   counter:v1   \"python app.py\"   2 seconds ago   Exited (0) Less than a second ago             counter-web"
+   ],
+   "rc": 0,
+   "sec": 0.07
+  },
+  "rm_v1": {
+   "cmd": "docker rm counter-web",
+   "out": [
+    "counter-web"
+   ],
+   "rc": 0,
+   "sec": 0.07
+  },
+  "history_v1": {
+   "cmd": "docker history counter:v1",
+   "out": [
+    "IMAGE          CREATED         CREATED BY                                      SIZE      COMMENT",
+    "7a34c027f1e1   2 seconds ago   CMD [\"python\" \"app.py\"]                         0B        buildkit.dockerfile.v0",
+    "<missing>      2 seconds ago   EXPOSE [8000/tcp]                               0B        buildkit.dockerfile.v0",
+    "<missing>      2 seconds ago   COPY app.py . # buildkit                        12.3kB    buildkit.dockerfile.v0",
+    "<missing>      2 seconds ago   WORKDIR /app                                    8.19kB    buildkit.dockerfile.v0",
+    "<missing>      4 days ago      CMD [\"python3\"]                                 0B        buildkit.dockerfile.v0",
+    "<missing>      4 days ago      RUN /bin/sh -c set -eux;  for src in idle3 p…   16.4kB    buildkit.dockerfile.v0",
+    "<missing>      4 days ago      RUN /bin/sh -c set -eux;   savedAptMark=\"$(a…   41.4MB    buildkit.dockerfile.v0",
+    "<missing>      4 days ago      ENV PYTHON_SHA256=b5796915dc45ff745cfb4e990a…   0B        buildkit.dockerfile.v0",
+    "<missing>      4 days ago      ENV PYTHON_VERSION=3.12.16                      0B        buildkit.dockerfile.v0",
+    "<missing>      4 days ago      ENV GPG_KEY=7169605F62C751356D054A26A821E680…   0B        buildkit.dockerfile.v0",
+    "<missing>      4 days ago      RUN /bin/sh -c set -eux;  apt-get update;  a…   4.93MB    buildkit.dockerfile.v0",
+    "<missing>      4 days ago      ENV LANG=C.UTF-8                                0B        buildkit.dockerfile.v0",
+    "<missing>      4 days ago      ENV PATH=/usr/local/bin:/usr/local/sbin:/usr…   0B        buildkit.dockerfile.v0",
+    "<missing>      6 days ago      # debian.sh --arch 'amd64' out/ 'trixie' '@1…   87.7MB    debuerreotype 0.17"
+   ],
+   "rc": 0,
+   "sec": 0.07
+  },
+  "history_v1_raw": {
+   "cmd": "docker history --no-trunc --format \"{{.Size}}\t{{.CreatedBy}}\" counter:v1",
+   "out": [
+    "0B\tCMD [\"python\" \"app.py\"]",
+    "0B\tEXPOSE [8000/tcp]",
+    "12.3kB\tCOPY app.py . # buildkit",
+    "8.19kB\tWORKDIR /app",
+    "0B\tCMD [\"python3\"]",
+    "16.4kB\tRUN /bin/sh -c set -eux;  for src in idle3 pip3 pydoc3 python3 python3-config; do   dst=\"$(echo \"$src\" | tr -d 3)\";   [ -s \"/usr/local/bin/$src\" ];   [ ! -e \"/usr/local/bin/$dst\" ];   ln -svT \"$src\" \"/usr/local/bin/$dst\";  done # buildkit",
+    "41.4MB\tRUN /bin/sh -c set -eux;   savedAptMark=\"$(apt-mark showmanual)\";  apt-get update;  apt-get install -y --no-install-recommends   dpkg-dev   g++   gcc   gnupg   libbluetooth-dev   libbz2-dev   libc6-dev   libdb-dev   libffi-dev   libgdbm-dev   liblzma-dev   libncursesw5-dev   libreadline-dev   libsqlite3-dev   libssl-dev   make   tk-dev   uuid-dev   wget   xz-utils   zlib1g-dev  ;   wget -O python.tar.xz \"https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz\";  echo \"$PYTHON_SHA256 *python.tar.xz\" | sha256sum -c -;  wget -O python.tar.xz.asc \"https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz.asc\";  GNUPGHOME=\"$(mktemp -d)\"; export GNUPGHOME;  gpg --batch --keyserver hkps://keys.openpgp.org --recv-keys \"$GPG_KEY\";  gpg --batch --verify python.tar.xz.asc python.tar.xz;  gpgconf --kill all;  rm -rf \"$GNUPGHOME\" python.tar.xz.asc;  mkdir -p /usr/src/python;  tar --extract --directory /usr/src/python --strip-components=1 --file python.tar.xz;  rm python.tar.xz;   cd /usr/src/python;  gnuArch=\"$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)\";  ./configure   --build=\"$gnuArch\"   --enable-loadable-sqlite-extensions   --enable-optimizations   --enable-option-checking=fatal   --enable-shared   $(test \"${gnuArch%%-*}\" != 'riscv64' && echo '--with-lto')   --with-ensurepip  ;  nproc=\"$(nproc)\";  EXTRA_CFLAGS=\"$(dpkg-buildflags --get CFLAGS)\";  LDFLAGS=\"$(dpkg-buildflags --get LDFLAGS)\";  LDFLAGS=\"${LDFLAGS:-} -Wl,--strip-all\";  arch=\"$(dpkg --print-architecture)\"; arch=\"${arch##*-}\";  case \"$arch\" in   amd64|arm64)    EXTRA_CFLAGS=\"${EXTRA_CFLAGS:-} -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer\";    ;;   i386)    ;;   *)    EXTRA_CFLAGS=\"${EXTRA_CFLAGS:-} -fno-omit-frame-pointer\";    ;;  esac;  make -j \"$nproc\"   \"EXTRA_CFLAGS=${EXTRA_CFLAGS:-}\"   \"LDFLAGS=${LDFLAGS:-}\"  ;  rm python;  make -j \"$nproc\"   \"EXTRA_CFLAGS=${EXTRA_CFLAGS:-}\"   \"LDFLAGS=${LDFLAGS:-} -Wl,-rpath='\\$\\$ORIGIN/../lib'\"   python  ;  make install;   cd /;  rm -rf /usr/src/python;   find /usr/local -depth   \\(    \\( -type d -a \\( -name test -o -name tests -o -name idle_test \\) \\)    -o \\( -type f -a \\( -name '*.pyc' -o -name '*.pyo' -o -name 'libpython*.a' \\) \\)   \\) -exec rm -rf '{}' +  ;   ldconfig;   apt-mark auto '.*' > /dev/null;  apt-mark manual $savedAptMark;  find /usr/local -type f -executable -not \\( -name '*tkinter*' \\) -exec ldd '{}' ';'   | awk '/=>/ { so = $(NF-1); if (index(so, \"/usr/local/\") == 1) { next }; gsub(\"^/(usr/)?\", \"\", so); printf \"*%s\\n\", so }'   | sort -u   | xargs -rt dpkg-query --search   | awk 'sub(\":$\", \"\", $1) { print $1 }'   | sort -u   | xargs -r apt-mark manual  ;  apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false;  apt-get dist-clean;   export PYTHONDONTWRITEBYTECODE=1;  python3 --version;  pip3 --version # buildkit",
+    "0B\tENV PYTHON_SHA256=b5796915dc45ff745cfb4e990a7e7c93d6f546328a102ce31448d69ebc37575c",
+    "0B\tENV PYTHON_VERSION=3.12.16",
+    "0B\tENV GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305",
+    "4.93MB\tRUN /bin/sh -c set -eux;  apt-get update;  apt-get install -y --no-install-recommends   ca-certificates   netbase   tzdata  ;  apt-get dist-clean # buildkit",
+    "0B\tENV LANG=C.UTF-8",
+    "0B\tENV PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+    "87.7MB\t# debian.sh --arch 'amd64' out/ 'trixie' '@1793059200'"
+   ],
+   "rc": 0,
+   "sec": 0.07
+  },
+  "sleeper_run": {
+   "cmd": "docker run -d --name sleeper python:3.12-slim python -c \"import time; time.sleep(600)\"",
+   "out": [
+    "09dc6ec95518ff4e8e73ea99b29ff26663821ff43b34b2aec954f746fb6dd962"
+   ],
+   "rc": 0,
+   "sec": 0.32
+  },
+  "sleeper_stop": {
+   "cmd": "docker stop sleeper",
+   "out": [
+    "sleeper"
+   ],
+   "rc": 0,
+   "sec": 1.27
+  },
+  "shell_build": {
+   "cmd": "docker build -t counter:shell .",
+   "out": [
+    "#0 building with \"desktop-linux\" instance using docker driver",
+    "",
+    "#1 [internal] load build definition from Dockerfile",
+    "#1 transferring dockerfile: 116B 0.0s done",
+    "#1 WARN: JSONArgsRecommended: JSON arguments recommended for CMD to prevent unintended behavior related to OS signals (line 5)",
+    "#1 DONE 0.0s",
+    "",
+    "#2 [internal] load metadata for docker.io/library/python:3.12-slim",
+    "#2 DONE 0.0s",
+    "",
+    "#3 [internal] load .dockerignore",
+    "#3 transferring context: 2B done",
+    "#3 DONE 0.0s",
+    "",
+    "#4 [1/3] FROM docker.io/library/python:3.12-slim@sha256:aa943ce411423c7582288f18707ff66eddcbaeb510502d747a72aeb34f30d159",
+    "#4 resolve docker.io/library/python:3.12-slim@sha256:aa943ce411423c7582288f18707ff66eddcbaeb510502d747a72aeb34f30d159",
+    "#4 resolve docker.io/library/python:3.12-slim@sha256:aa943ce411423c7582288f18707ff66eddcbaeb510502d747a72aeb34f30d159 0.0s done",
+    "#4 DONE 0.0s",
+    "",
+    "#5 [internal] load build context",
+    "#5 transferring context: 632B 0.0s done",
+    "#5 DONE 0.0s",
+    "",
+    "#6 [2/3] WORKDIR /app",
+    "#6 CACHED",
+    "",
+    "#7 [3/3] COPY app.py .",
+    "#7 CACHED",
+    "",
+    "#8 exporting to image",
+    "#8 exporting layers done",
+    "#8 exporting manifest sha256:e5a2036d1dda7e65a196fb761092b2f6e62d8e3828ae8ac3770d13e5e83d64c3 0.0s done",
+    "#8 exporting config sha256:86c9233455eeabf31b4cc4effc9b6f9df4fec0587dbdfa6d893404bfd16df0bb 0.0s done",
+    "#8 exporting attestation manifest sha256:610c7601f3244f2344c2d3a4bcf7a87f076dde2d352b04806b9d67ee71ef67c3 0.0s done",
+    "#8 exporting manifest list sha256:ef71a1b2c19bd736383461b43e38156e62a54d31b2e9dbc670690dfba1a5beb4",
+    "#8 exporting manifest list sha256:ef71a1b2c19bd736383461b43e38156e62a54d31b2e9dbc670690dfba1a5beb4 0.0s done",
+    "#8 naming to docker.io/library/counter:shell done",
+    "#8 unpacking to docker.io/library/counter:shell 0.0s done",
+    "#8 DONE 0.1s",
+    "",
+    " \u001b[33m1 warning found (use docker --debug to expand):",
+    "\u001b[0m - JSONArgsRecommended: JSON arguments recommended for CMD to prevent unintended behavior related to OS signals (line 5)",
+    "",
+    "View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/6xt10r10szywe6grn51k3kwgb"
+   ],
+   "rc": 0,
+   "sec": 0.7
+  },
+  "shell_run": {
+   "cmd": "docker run -d --name shell-demo counter:shell",
+   "out": [
+    "67c100ecab7f0998df09d7f2308b68a6ac6103a6750cf5d11be8ac50510a926d"
+   ],
+   "rc": 0,
+   "sec": 0.32
+  },
+  "shell_pid1": {
+   "cmd": "docker exec shell-demo cat /proc/1/cmdline",
+   "out": [
+    "/bin/sh -c python app.py "
+   ],
+   "rc": 0,
+   "sec": 0.14
+  },
+  "shell_stop": {
+   "cmd": "docker stop shell-demo",
+   "out": [
+    "shell-demo"
+   ],
+   "rc": 0,
+   "sec": 1.26
+  },
+  "env_var": {
+   "cmd": "docker run --rm -e APP_MODE=production python:3.12-slim python -c \"import os; print(os.environ['APP_MODE'])\"",
+   "out": [
+    "production"
+   ],
+   "rc": 0,
+   "sec": 0.54
+  },
+  "bind_run": {
+   "cmd": "docker run -d --name bind-demo -p 8081:8000 python:3.12-slim python -m http.server 8000 --bind 127.0.0.1",
+   "out": [
+    "0731bcf85c225142f436d5b65b4e46037438d5316f6e88c27fd78bfcf83c9450"
+   ],
+   "rc": 0,
+   "sec": 0.34
+  },
+  "curl_bind": {
+   "cmd": "curl http://localhost:8081",
+   "out": [
+    "RemoteDisconnected: Remote end closed connection without response"
+   ],
+   "rc": null,
+   "sec": 0.0
+  },
+  "bind_logs": {
+   "cmd": "docker logs bind-demo",
+   "out": [],
+   "rc": 0,
+   "sec": 0.07
+  },
+  "build_good_first": {
+   "cmd": "docker build --no-cache -t counter:good .",
+   "out": [
+    "#0 building with \"desktop-linux\" instance using docker driver",
+    "",
+    "#1 [internal] load build definition from Dockerfile",
+    "#1 transferring dockerfile: 200B 0.0s done",
+    "#1 DONE 0.0s",
+    "",
+    "#2 [internal] load metadata for docker.io/library/python:3.12-slim",
+    "#2 DONE 0.0s",
+    "",
+    "#3 [internal] load .dockerignore",
+    "#3 transferring context: 77B 0.0s done",
+    "#3 DONE 0.0s",
+    "",
+    "#4 [1/5] FROM docker.io/library/python:3.12-slim@sha256:aa943ce411423c7582288f18707ff66eddcbaeb510502d747a72aeb34f30d159",
+    "#4 resolve docker.io/library/python:3.12-slim@sha256:aa943ce411423c7582288f18707ff66eddcbaeb510502d747a72aeb34f30d159 0.0s done",
+    "#4 DONE 0.0s",
+    "",
+    "#5 [2/5] WORKDIR /app",
+    "#5 CACHED",
+    "",
+    "#6 [internal] load build context",
+    "#6 transferring context: 939B 0.0s done",
+    "#6 DONE 0.1s",
+    "",
+    "#7 [3/5] COPY requirements.txt .",
+    "#7 DONE 0.0s",
+    "",
+    "#8 [4/5] RUN pip install --no-cache-dir -r requirements.txt",
+    "#8 1.872 Collecting redis==5.2.1 (from -r requirements.txt (line 1))",
+    "#8 2.052   Downloading redis-5.2.1-py3-none-any.whl.metadata (9.1 kB)",
+    "#8 2.099 Downloading redis-5.2.1-py3-none-any.whl (261 kB)",
+    "#8 2.214 Installing collected packages: redis",
+    "#8 2.402 Successfully installed redis-5.2.1",
+    "#8 2.402 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.",
+    "#8 2.607 ",
+    "#8 2.607 [notice] A new release of pip is available: 25.0.1 -> 26.2.2",
+    "#8 2.607 [notice] To update, run: pip install --upgrade pip",
+    "#8 DONE 2.7s",
+    "",
+    "#9 [5/5] COPY app.py .",
+    "#9 DONE 0.0s",
+    "",
+    "#10 exporting to image",
+    "#10 exporting layers",
+    "#10 exporting layers 0.5s done",
+    "#10 exporting manifest sha256:6e3d79eec667ae38bf82d01563cdf25949beb2e99d03b0be36f16edda0fcfa28 0.0s done",
+    "#10 exporting config sha256:415b7242e01175d52198aab7be956335f1ae1a20f73269b68f193d7bcc9abd58 done",
+    "#10 exporting attestation manifest sha256:3d765661926cb1794aaaf16316890fbbaac70983f47fb5018111dc9d8aef8fe3 0.0s done",
+    "#10 exporting manifest list sha256:68687d1623c1ccf03da6d55dbaf272070d4e7bf23ef15629e310a9efcc62b4d6 0.0s done",
+    "#10 naming to docker.io/library/counter:good done",
+    "#10 unpacking to docker.io/library/counter:good",
+    "#10 unpacking to docker.io/library/counter:good 0.2s done",
+    "#10 DONE 0.7s",
+    "",
+    "View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/xphzo21h32vn3ep7s222ick39"
+   ],
+   "rc": 0,
+   "sec": 4.05
+  },
+  "build_good_rebuild": {
+   "cmd": "docker build -t counter:good .",
+   "out": [
+    "#0 building with \"desktop-linux\" instance using docker driver",
+    "",
+    "#1 [internal] load build definition from Dockerfile",
+    "#1 transferring dockerfile: 200B done",
+    "#1 DONE 0.0s",
+    "",
+    "#2 [internal] load metadata for docker.io/library/python:3.12-slim",
+    "#2 DONE 0.0s",
+    "",
+    "#3 [internal] load .dockerignore",
+    "#3 transferring context: 77B done",
+    "#3 DONE 0.0s",
+    "",
+    "#4 [1/5] FROM docker.io/library/python:3.12-slim@sha256:aa943ce411423c7582288f18707ff66eddcbaeb510502d747a72aeb34f30d159",
+    "#4 resolve docker.io/library/python:3.12-slim@sha256:aa943ce411423c7582288f18707ff66eddcbaeb510502d747a72aeb34f30d159 0.0s done",
+    "#4 DONE 0.0s",
+    "",
+    "#5 [internal] load build context",
+    "#5 transferring context: 964B 0.0s done",
+    "#5 DONE 0.0s",
+    "",
+    "#6 [3/5] COPY requirements.txt .",
+    "#6 CACHED",
+    "",
+    "#7 [2/5] WORKDIR /app",
+    "#7 CACHED",
+    "",
+    "#8 [4/5] RUN pip install --no-cache-dir -r requirements.txt",
+    "#8 CACHED",
+    "",
+    "#9 [5/5] COPY app.py .",
+    "#9 DONE 0.0s",
+    "",
+    "#10 exporting to image",
+    "#10 exporting layers 0.1s done",
+    "#10 exporting manifest sha256:8df5eddc726dffd08e8a30c9fb44534734dd118e11f064919ed4f7d2becf0118 0.0s done",
+    "#10 exporting config sha256:e072021b33d73556384c1e63ae9757165bd747edcf0a9bce3c80e8aa918ad1ad done",
+    "#10 exporting attestation manifest sha256:c1428b1c4b088310623af144cfc9a9ec555bba86e7d6e06bfe53789137bdb89d 0.0s done",
+    "#10 exporting manifest list sha256:02931317cac515ad916a0fc31464a3883aeb78e89c4e348c504fe01d30e522a2",
+    "#10 exporting manifest list sha256:02931317cac515ad916a0fc31464a3883aeb78e89c4e348c504fe01d30e522a2 0.0s done",
+    "#10 naming to docker.io/library/counter:good done",
+    "#10 unpacking to docker.io/library/counter:good 0.0s done",
+    "#10 DONE 0.2s",
+    "",
+    "View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/vlrhug1cwztlyuntiwv96ca9x"
+   ],
+   "rc": 0,
+   "sec": 0.74
+  },
+  "build_bad_first": {
+   "cmd": "docker build --no-cache -f Dockerfile.bad -t counter:bad .",
+   "out": [
+    "#0 building with \"desktop-linux\" instance using docker driver",
+    "",
+    "#1 [internal] load build definition from Dockerfile.bad",
+    "#1 transferring dockerfile: 175B 0.0s done",
+    "#1 DONE 0.0s",
+    "",
+    "#2 [internal] load metadata for docker.io/library/python:3.12-slim",
+    "#2 DONE 0.0s",
+    "",
+    "#3 [internal] load .dockerignore",
+    "#3 transferring context: 77B done",
+    "#3 DONE 0.0s",
+    "",
+    "#4 [1/4] FROM docker.io/library/python:3.12-slim@sha256:aa943ce411423c7582288f18707ff66eddcbaeb510502d747a72aeb34f30d159",
+    "#4 resolve docker.io/library/python:3.12-slim@sha256:aa943ce411423c7582288f18707ff66eddcbaeb510502d747a72aeb34f30d159 0.0s done",
+    "#4 DONE 0.0s",
+    "",
+    "#5 [2/4] WORKDIR /app",
+    "#5 CACHED",
+    "",
+    "#6 [internal] load build context",
+    "#6 transferring context: 1.75kB 0.0s done",
+    "#6 DONE 0.0s",
+    "",
+    "#7 [3/4] COPY . .",
+    "#7 DONE 0.0s",
+    "",
+    "#8 [4/4] RUN pip install --no-cache-dir -r requirements.txt",
+    "#8 1.733 Collecting redis==5.2.1 (from -r requirements.txt (line 1))",
+    "#8 1.886   Downloading redis-5.2.1-py3-none-any.whl.metadata (9.1 kB)",
+    "#8 1.929 Downloading redis-5.2.1-py3-none-any.whl (261 kB)",
+    "#8 2.032 Installing collected packages: redis",
+    "#8 2.218 Successfully installed redis-5.2.1",
+    "#8 2.218 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.",
+    "#8 2.443 ",
+    "#8 2.443 [notice] A new release of pip is available: 25.0.1 -> 26.2.2",
+    "#8 2.443 [notice] To update, run: pip install --upgrade pip",
+    "#8 DONE 2.5s",
+    "",
+    "#9 exporting to image",
+    "#9 exporting layers",
+    "#9 exporting layers 0.5s done",
+    "#9 exporting manifest sha256:3acb91c12ddf8431c93eda79927f23fef24e7acf9afcf2bf9bfac099f5e96f74 done",
+    "#9 exporting config sha256:71edc9369ce7dc013d5fc3530f44947cc8d72c124be08d5ce8fb896c432bb1ec done",
+    "#9 exporting attestation manifest sha256:80fb6817f0682bd584a8a5d1f75685227b874dcc728f66f7dd2a0776280560e5 0.0s done",
+    "#9 exporting manifest list sha256:b2802f1e62907ac17ae17089e49af19b99fe1ea57a9661a1e75c3a0062d0917f 0.0s done",
+    "#9 naming to docker.io/library/counter:bad done",
+    "#9 unpacking to docker.io/library/counter:bad",
+    "#9 unpacking to docker.io/library/counter:bad 0.2s done",
+    "#9 DONE 0.7s",
+    "",
+    "View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/8azrln47422uyxgfgfvzjh3xt"
+   ],
+   "rc": 0,
+   "sec": 3.8
+  },
+  "build_bad_rebuild": {
+   "cmd": "docker build -f Dockerfile.bad -t counter:bad .",
+   "out": [
+    "#0 building with \"desktop-linux\" instance using docker driver",
+    "",
+    "#1 [internal] load build definition from Dockerfile.bad",
+    "#1 transferring dockerfile: 175B done",
+    "#1 DONE 0.0s",
+    "",
+    "#2 [internal] load metadata for docker.io/library/python:3.12-slim",
+    "#2 DONE 0.0s",
+    "",
+    "#3 [internal] load .dockerignore",
+    "#3 transferring context: 77B done",
+    "#3 DONE 0.0s",
+    "",
+    "#4 [1/4] FROM docker.io/library/python:3.12-slim@sha256:aa943ce411423c7582288f18707ff66eddcbaeb510502d747a72aeb34f30d159",
+    "#4 resolve docker.io/library/python:3.12-slim@sha256:aa943ce411423c7582288f18707ff66eddcbaeb510502d747a72aeb34f30d159 0.0s done",
+    "#4 DONE 0.0s",
+    "",
+    "#5 [internal] load build context",
+    "#5 transferring context: 1.10kB done",
+    "#5 DONE 0.0s",
+    "",
+    "#6 [2/4] WORKDIR /app",
+    "#6 CACHED",
+    "",
+    "#7 [3/4] COPY . .",
+    "#7 DONE 0.0s",
+    "",
+    "#8 [4/4] RUN pip install --no-cache-dir -r requirements.txt",
+    "#8 1.685 Collecting redis==5.2.1 (from -r requirements.txt (line 1))",
+    "#8 1.846   Downloading redis-5.2.1-py3-none-any.whl.metadata (9.1 kB)",
+    "#8 1.887 Downloading redis-5.2.1-py3-none-any.whl (261 kB)",
+    "#8 1.994 Installing collected packages: redis",
+    "#8 2.171 Successfully installed redis-5.2.1",
+    "#8 2.172 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.",
+    "#8 2.394 ",
+    "#8 2.394 [notice] A new release of pip is available: 25.0.1 -> 26.2.2",
+    "#8 2.394 [notice] To update, run: pip install --upgrade pip",
+    "#8 DONE 2.5s",
+    "",
+    "#9 exporting to image",
+    "#9 exporting layers",
+    "#9 exporting layers 0.5s done",
+    "#9 exporting manifest sha256:712aaf099c214fcab6bf7bbc384008cdc1e7604c02a0251f06433092e30b410b done",
+    "#9 exporting config sha256:dc4ed800e67a42c222eb3402e2195d46f7a0cdf06367ff071d755738f220d419 done",
+    "#9 exporting attestation manifest sha256:f2be57951f6551316cb5840bc5d8464401b90299cff50593a4f71da34f25dc22 0.0s done",
+    "#9 exporting manifest list sha256:5fa6c9f865fd99c6d2edabffc3a5598fd8a57d58b7e360d34920150a7987d11a 0.0s done",
+    "#9 naming to docker.io/library/counter:bad done",
+    "#9 unpacking to docker.io/library/counter:bad",
+    "#9 unpacking to docker.io/library/counter:bad 0.2s done",
+    "#9 DONE 0.7s",
+    "",
+    "View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/jok6ep2m7vhbwuw4gt3t42fgr"
+   ],
+   "rc": 0,
+   "sec": 3.77
+  },
+  "history_good": {
+   "cmd": "docker history counter:good",
+   "out": [
+    "IMAGE          CREATED          CREATED BY                                      SIZE      COMMENT",
+    "02931317cac5   8 seconds ago    CMD [\"python\" \"app.py\"]                         0B        buildkit.dockerfile.v0",
+    "<missing>      8 seconds ago    EXPOSE [8000/tcp]                               0B        buildkit.dockerfile.v0",
+    "<missing>      8 seconds ago    COPY app.py . # buildkit                        12.3kB    buildkit.dockerfile.v0",
+    "<missing>      9 seconds ago    RUN /bin/sh -c pip install --no-cache-dir -r…   12.5MB    buildkit.dockerfile.v0",
+    "<missing>      12 seconds ago   COPY requirements.txt . # buildkit              12.3kB    buildkit.dockerfile.v0",
+    "<missing>      26 seconds ago   WORKDIR /app                                    8.19kB    buildkit.dockerfile.v0",
+    "<missing>      4 days ago       CMD [\"python3\"]                                 0B        buildkit.dockerfile.v0",
+    "<missing>      4 days ago       RUN /bin/sh -c set -eux;  for src in idle3 p…   16.4kB    buildkit.dockerfile.v0",
+    "<missing>      4 days ago       RUN /bin/sh -c set -eux;   savedAptMark=\"$(a…   41.4MB    buildkit.dockerfile.v0",
+    "<missing>      4 days ago       ENV PYTHON_SHA256=b5796915dc45ff745cfb4e990a…   0B        buildkit.dockerfile.v0",
+    "<missing>      4 days ago       ENV PYTHON_VERSION=3.12.16                      0B        buildkit.dockerfile.v0",
+    "<missing>      4 days ago       ENV GPG_KEY=7169605F62C751356D054A26A821E680…   0B        buildkit.dockerfile.v0",
+    "<missing>      4 days ago       RUN /bin/sh -c set -eux;  apt-get update;  a…   4.93MB    buildkit.dockerfile.v0",
+    "<missing>      4 days ago       ENV LANG=C.UTF-8                                0B        buildkit.dockerfile.v0",
+    "<missing>      4 days ago       ENV PATH=/usr/local/bin:/usr/local/sbin:/usr…   0B        buildkit.dockerfile.v0",
+    "<missing>      6 days ago       # debian.sh --arch 'amd64' out/ 'trixie' '@1…   87.7MB    debuerreotype 0.17"
+   ],
+   "rc": 0,
+   "sec": 0.07
+  },
+  "history_good_raw": {
+   "cmd": "docker history --no-trunc --format \"{{.Size}}\t{{.CreatedBy}}\" counter:good",
+   "out": [
+    "0B\tCMD [\"python\" \"app.py\"]",
+    "0B\tEXPOSE [8000/tcp]",
+    "12.3kB\tCOPY app.py . # buildkit",
+    "12.5MB\tRUN /bin/sh -c pip install --no-cache-dir -r requirements.txt # buildkit",
+    "12.3kB\tCOPY requirements.txt . # buildkit",
+    "8.19kB\tWORKDIR /app",
+    "0B\tCMD [\"python3\"]",
+    "16.4kB\tRUN /bin/sh -c set -eux;  for src in idle3 pip3 pydoc3 python3 python3-config; do   dst=\"$(echo \"$src\" | tr -d 3)\";   [ -s \"/usr/local/bin/$src\" ];   [ ! -e \"/usr/local/bin/$dst\" ];   ln -svT \"$src\" \"/usr/local/bin/$dst\";  done # buildkit",
+    "41.4MB\tRUN /bin/sh -c set -eux;   savedAptMark=\"$(apt-mark showmanual)\";  apt-get update;  apt-get install -y --no-install-recommends   dpkg-dev   g++   gcc   gnupg   libbluetooth-dev   libbz2-dev   libc6-dev   libdb-dev   libffi-dev   libgdbm-dev   liblzma-dev   libncursesw5-dev   libreadline-dev   libsqlite3-dev   libssl-dev   make   tk-dev   uuid-dev   wget   xz-utils   zlib1g-dev  ;   wget -O python.tar.xz \"https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz\";  echo \"$PYTHON_SHA256 *python.tar.xz\" | sha256sum -c -;  wget -O python.tar.xz.asc \"https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz.asc\";  GNUPGHOME=\"$(mktemp -d)\"; export GNUPGHOME;  gpg --batch --keyserver hkps://keys.openpgp.org --recv-keys \"$GPG_KEY\";  gpg --batch --verify python.tar.xz.asc python.tar.xz;  gpgconf --kill all;  rm -rf \"$GNUPGHOME\" python.tar.xz.asc;  mkdir -p /usr/src/python;  tar --extract --directory /usr/src/python --strip-components=1 --file python.tar.xz;  rm python.tar.xz;   cd /usr/src/python;  gnuArch=\"$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)\";  ./configure   --build=\"$gnuArch\"   --enable-loadable-sqlite-extensions   --enable-optimizations   --enable-option-checking=fatal   --enable-shared   $(test \"${gnuArch%%-*}\" != 'riscv64' && echo '--with-lto')   --with-ensurepip  ;  nproc=\"$(nproc)\";  EXTRA_CFLAGS=\"$(dpkg-buildflags --get CFLAGS)\";  LDFLAGS=\"$(dpkg-buildflags --get LDFLAGS)\";  LDFLAGS=\"${LDFLAGS:-} -Wl,--strip-all\";  arch=\"$(dpkg --print-architecture)\"; arch=\"${arch##*-}\";  case \"$arch\" in   amd64|arm64)    EXTRA_CFLAGS=\"${EXTRA_CFLAGS:-} -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer\";    ;;   i386)    ;;   *)    EXTRA_CFLAGS=\"${EXTRA_CFLAGS:-} -fno-omit-frame-pointer\";    ;;  esac;  make -j \"$nproc\"   \"EXTRA_CFLAGS=${EXTRA_CFLAGS:-}\"   \"LDFLAGS=${LDFLAGS:-}\"  ;  rm python;  make -j \"$nproc\"   \"EXTRA_CFLAGS=${EXTRA_CFLAGS:-}\"   \"LDFLAGS=${LDFLAGS:-} -Wl,-rpath='\\$\\$ORIGIN/../lib'\"   python  ;  make install;   cd /;  rm -rf /usr/src/python;   find /usr/local -depth   \\(    \\( -type d -a \\( -name test -o -name tests -o -name idle_test \\) \\)    -o \\( -type f -a \\( -name '*.pyc' -o -name '*.pyo' -o -name 'libpython*.a' \\) \\)   \\) -exec rm -rf '{}' +  ;   ldconfig;   apt-mark auto '.*' > /dev/null;  apt-mark manual $savedAptMark;  find /usr/local -type f -executable -not \\( -name '*tkinter*' \\) -exec ldd '{}' ';'   | awk '/=>/ { so = $(NF-1); if (index(so, \"/usr/local/\") == 1) { next }; gsub(\"^/(usr/)?\", \"\", so); printf \"*%s\\n\", so }'   | sort -u   | xargs -rt dpkg-query --search   | awk 'sub(\":$\", \"\", $1) { print $1 }'   | sort -u   | xargs -r apt-mark manual  ;  apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false;  apt-get dist-clean;   export PYTHONDONTWRITEBYTECODE=1;  python3 --version;  pip3 --version # buildkit",
+    "0B\tENV PYTHON_SHA256=b5796915dc45ff745cfb4e990a7e7c93d6f546328a102ce31448d69ebc37575c",
+    "0B\tENV PYTHON_VERSION=3.12.16",
+    "0B\tENV GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305",
+    "4.93MB\tRUN /bin/sh -c set -eux;  apt-get update;  apt-get install -y --no-install-recommends   ca-certificates   netbase   tzdata  ;  apt-get dist-clean # buildkit",
+    "0B\tENV LANG=C.UTF-8",
+    "0B\tENV PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+    "87.7MB\t# debian.sh --arch 'amd64' out/ 'trixie' '@1793059200'"
+   ],
+   "rc": 0,
+   "sec": 0.07
+  },
+  "ctx_without": {
+   "cmd": "docker build --no-cache -t counter:ctx .",
+   "out": [
+    "#0 building with \"desktop-linux\" instance using docker driver",
+    "",
+    "#1 [internal] load build definition from Dockerfile",
+    "#1 transferring dockerfile: 171B done",
+    "#1 DONE 0.0s",
+    "",
+    "#2 [internal] load metadata for docker.io/library/python:3.12-slim",
+    "#2 DONE 0.0s",
+    "",
+    "#3 [internal] load .dockerignore",
+    "#3 transferring context: 2B done",
+    "#3 DONE 0.0s",
+    "",
+    "#4 [1/4] FROM docker.io/library/python:3.12-slim@sha256:aa943ce411423c7582288f18707ff66eddcbaeb510502d747a72aeb34f30d159",
+    "#4 resolve docker.io/library/python:3.12-slim@sha256:aa943ce411423c7582288f18707ff66eddcbaeb510502d747a72aeb34f30d159 0.0s done",
+    "#4 DONE 0.0s",
+    "",
+    "#5 [2/4] WORKDIR /app",
+    "#5 CACHED",
+    "",
+    "#6 [internal] load build context",
+    "#6 transferring context: 52.44MB 2.7s done",
+    "#6 DONE 2.7s",
+    "",
+    "#7 [3/4] COPY . .",
+    "#7 DONE 0.1s",
+    "",
+    "#8 [4/4] RUN pip install --no-cache-dir -r requirements.txt",
+    "#8 1.630 Collecting redis==5.2.1 (from -r requirements.txt (line 1))",
+    "#8 1.784   Downloading redis-5.2.1-py3-none-any.whl.metadata (9.1 kB)",
+    "#8 1.825 Downloading redis-5.2.1-py3-none-any.whl (261 kB)",
+    "#8 1.935 Installing collected packages: redis",
+    "#8 2.120 Successfully installed redis-5.2.1",
+    "#8 2.120 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.",
+    "#8 2.321 ",
+    "#8 2.321 [notice] A new release of pip is available: 25.0.1 -> 26.2.2",
+    "#8 2.321 [notice] To update, run: pip install --upgrade pip",
+    "#8 DONE 2.4s",
+    "",
+    "#9 exporting to image",
+    "#9 exporting layers",
+    "#9 exporting layers 1.3s done",
+    "#9 exporting manifest sha256:8dc050695c8c141295e178df970ffec5d7f980c8df8ab953dd9c7e7955ab98ac done",
+    "#9 exporting config sha256:c8fe9aad59988d9e1df76da3f051bdb77f4290dabea26c3435248cd5c09c8c2c 0.0s done",
+    "#9 exporting attestation manifest sha256:519737d57d229727bb09163eb4573d8c62c0812cec2b6e48ad1f0ebee7d3c05e 0.0s done",
+    "#9 exporting manifest list sha256:298bd295925a9909563ff079feb72cd52ff51c25072a1c592d05becfd04a160d 0.0s done",
+    "#9 naming to docker.io/library/counter:ctx done",
+    "#9 unpacking to docker.io/library/counter:ctx",
+    "#9 unpacking to docker.io/library/counter:ctx 0.3s done",
+    "#9 DONE 1.7s",
+    "",
+    "View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/1o3qjs03shc613uit6mf83sxs"
+   ],
+   "rc": 0,
+   "sec": 7.38
+  },
+  "ctx_size_without": {
+   "cmd": "docker image inspect --format {{.Size}} counter:ctx",
+   "out": [
+    "99844576"
+   ],
+   "rc": 0,
+   "sec": 0.08
+  },
+  "ctx_with": {
+   "cmd": "docker build --no-cache -t counter:ctx .",
+   "out": [
+    "#0 building with \"desktop-linux\" instance using docker driver",
+    "",
+    "#1 [internal] load build definition from Dockerfile",
+    "#1 transferring dockerfile: 171B done",
+    "#1 DONE 0.0s",
+    "",
+    "#2 [internal] load metadata for docker.io/library/python:3.12-slim",
+    "#2 DONE 0.0s",
+    "",
+    "#3 [internal] load .dockerignore",
+    "#3 transferring context: 77B done",
+    "#3 DONE 0.0s",
+    "",
+    "#4 [1/4] FROM docker.io/library/python:3.12-slim@sha256:aa943ce411423c7582288f18707ff66eddcbaeb510502d747a72aeb34f30d159",
+    "#4 resolve docker.io/library/python:3.12-slim@sha256:aa943ce411423c7582288f18707ff66eddcbaeb510502d747a72aeb34f30d159 0.0s done",
+    "#4 DONE 0.0s",
+    "",
+    "#5 [2/4] WORKDIR /app",
+    "#5 CACHED",
+    "",
+    "#6 [internal] load build context",
+    "#6 transferring context: 168B 0.0s done",
+    "#6 DONE 0.0s",
+    "",
+    "#7 [3/4] COPY . .",
+    "#7 DONE 0.1s",
+    "",
+    "#8 [4/4] RUN pip install --no-cache-dir -r requirements.txt",
+    "#8 1.671 Collecting redis==5.2.1 (from -r requirements.txt (line 1))",
+    "#8 1.834   Downloading redis-5.2.1-py3-none-any.whl.metadata (9.1 kB)",
+    "#8 1.879 Downloading redis-5.2.1-py3-none-any.whl (261 kB)",
+    "#8 1.995 Installing collected packages: redis",
+    "#8 2.189 Successfully installed redis-5.2.1",
+    "#8 2.190 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.",
+    "#8 2.441 ",
+    "#8 2.441 [notice] A new release of pip is available: 25.0.1 -> 26.2.2",
+    "#8 2.441 [notice] To update, run: pip install --upgrade pip",
+    "#8 DONE 2.6s",
+    "",
+    "#9 exporting to image",
+    "#9 exporting layers",
+    "#9 exporting layers 0.5s done",
+    "#9 exporting manifest sha256:7dddb52c4f163b0c6d3db3d3e26bbebaf8bb79fc27924c54c07ed6f77242883e done",
+    "#9 exporting config sha256:990b7339788b3bab1df1debcb413fd9c60dc889739ad17addcde9d8beda0db70 done",
+    "#9 exporting attestation manifest sha256:37063abb9faa1798114e0ae91b8a9967cb2f382cd674981287a243d98bddc844 0.0s done",
+    "#9 exporting manifest list sha256:570b9f8e75433efef9e56522e31ed9a07eeab8bafba08b85b78a375d23d64319 0.0s done",
+    "#9 naming to docker.io/library/counter:ctx done",
+    "#9 unpacking to docker.io/library/counter:ctx",
+    "#9 unpacking to docker.io/library/counter:ctx 0.2s done",
+    "#9 DONE 0.8s",
+    "",
+    "View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/s48odmw5o2165iboq6yqve4br"
+   ],
+   "rc": 0,
+   "sec": 3.93
+  },
+  "ctx_size_with": {
+   "cmd": "docker image inspect --format {{.Size}} counter:ctx",
+   "out": [
+    "47399597"
+   ],
+   "rc": 0,
+   "sec": 0.09
+  },
+  "pull_full": {
+   "cmd": "docker pull python:3.12",
+   "out": [
+    "3.12: Pulling from library/python",
+    "5fa694e7d746: Pulling fs layer",
+    "c0168c6e6744: Pulling fs layer",
+    "a1d156b0aab5: Pulling fs layer",
+    "dc161de3ddb4: Pulling fs layer",
+    "425148f8d5eb: Pulling fs layer",
+    "7df3eabe14ec: Pulling fs layer",
+    "7fac3b752bd4: Pulling fs layer",
+    "5fa694e7d746: Download complete",
+    "40ae9a7bc700: Download complete",
+    "7df3eabe14ec: Download complete",
+    "ad9c206fd3ff: Download complete",
+    "7fac3b752bd4: Download complete",
+    "dc161de3ddb4: Download complete",
+    "a1d156b0aab5: Download complete",
+    "a1d156b0aab5: Pull complete",
+    "c0168c6e6744: Download complete",
+    "7fac3b752bd4: Pull complete",
+    "c0168c6e6744: Pull complete",
+    "425148f8d5eb: Download complete",
+    "425148f8d5eb: Pull complete",
+    "7df3eabe14ec: Pull complete",
+    "dc161de3ddb4: Pull complete",
+    "5fa694e7d746: Pull complete",
+    "Digest: sha256:17b9724493d916f56565c131f389faff2597f46dec6ce09516f95125bc9f519f",
+    "Status: Downloaded newer image for python:3.12",
+    "docker.io/library/python:3.12"
+   ],
+   "rc": 0,
+   "sec": 25.78
+  },
+  "pull_alpine": {
+   "cmd": "docker pull python:3.12-alpine",
+   "out": [
+    "3.12-alpine: Pulling from library/python",
+    "44f1f4ea9467: Pulling fs layer",
+    "c03751883ae5: Pulling fs layer",
+    "8dc6b13ab3d0: Pulling fs layer",
+    "7b229517ed22: Pulling fs layer",
+    "44f1f4ea9467: Download complete",
+    "8dc6b13ab3d0: Download complete",
+    "7b229517ed22: Download complete",
+    "56b83917debc: Download complete",
+    "7d3c93c83994: Download complete",
+    "7b229517ed22: Pull complete",
+    "44f1f4ea9467: Pull complete",
+    "c03751883ae5: Download complete",
+    "8dc6b13ab3d0: Pull complete",
+    "c03751883ae5: Pull complete",
+    "Digest: sha256:e6dae589c1c05976188fd3bd019afd091445fc533ed2ea29001beddc7368a9c8",
+    "Status: Downloaded newer image for python:3.12-alpine",
+    "docker.io/library/python:3.12-alpine"
+   ],
+   "rc": 0,
+   "sec": 3.38
+  },
+  "pull_redis": {
+   "cmd": "docker pull redis:7-alpine",
+   "out": [
+    "7-alpine: Pulling from library/redis",
+    "759efa4719c9: Pulling fs layer",
+    "4f4fb700ef54: Pulling fs layer",
+    "e25d07126ba7: Pulling fs layer",
+    "a239ec2b8fe1: Pulling fs layer",
+    "cef7ad5a05c6: Pulling fs layer",
+    "1ea868e596ec: Pulling fs layer",
+    "ae75cb664c8f: Pulling fs layer",
+    "4f4fb700ef54: Download complete",
+    "ae75cb664c8f: Download complete",
+    "e25d07126ba7: Download complete",
+    "a239ec2b8fe1: Download complete",
+    "cef7ad5a05c6: Download complete",
+    "759efa4719c9: Download complete",
+    "4d584b19579f: Download complete",
+    "759efa4719c9: Pull complete",
+    "b5e4a0ae9c7c: Download complete",
+    "a239ec2b8fe1: Pull complete",
+    "cef7ad5a05c6: Pull complete",
+    "1ea868e596ec: Download complete",
+    "1ea868e596ec: Pull complete",
+    "4f4fb700ef54: Pull complete",
+    "ae75cb664c8f: Pull complete",
+    "e25d07126ba7: Pull complete",
+    "Digest: sha256:8da19c7399dca900c6822a1cf30f9d2285585e2c4b457ff4095b0f4500054d3f",
+    "Status: Downloaded newer image for redis:7-alpine",
+    "docker.io/library/redis:7-alpine"
+   ],
+   "rc": 0,
+   "sec": 3.18
+  },
+  "images_python": {
+   "cmd": "docker image ls --filter reference=python:3.12*",
+   "out": [
+    "WARNING: This output is designed for human readability. For machine-readable output, please use --format.",
+    "IMAGE                ID             DISK USAGE   CONTENT SIZE   EXTRA",
+    "python:3.12          17b9724493d9       1.62GB          430MB        ",
+    "python:3.12-alpine   e6dae589c1c0       74.7MB         18.7MB        ",
+    "python:3.12-slim     aa943ce41142        180MB         45.5MB        "
+   ],
+   "rc": 0,
+   "sec": 0.14
+  },
+  "size_python:3.12": {
+   "cmd": "docker image inspect --format {{.Size}} python:3.12",
+   "out": [
+    "411847673"
+   ],
+   "rc": 0,
+   "sec": 0.11
+  },
+  "size_python:3.12-slim": {
+   "cmd": "docker image inspect --format {{.Size}} python:3.12-slim",
+   "out": [
+    "43284989"
+   ],
+   "rc": 0,
+   "sec": 0.09
+  },
+  "size_python:3.12-alpine": {
+   "cmd": "docker image inspect --format {{.Size}} python:3.12-alpine",
+   "out": [
+    "18062363"
+   ],
+   "rc": 0,
+   "sec": 0.09
+  },
+  "size_counter:good": {
+   "cmd": "docker image inspect --format {{.Size}} counter:good",
+   "out": [
+    "47399989"
+   ],
+   "rc": 0,
+   "sec": 0.08
+  },
+  "size_redis:7-alpine": {
+   "cmd": "docker image inspect --format {{.Size}} redis:7-alpine",
+   "out": [
+    "16261881"
+   ],
+   "rc": 0,
+   "sec": 0.1
+  },
+  "novol_write": {
+   "cmd": "docker run --name notes-demo python:3.12-slim sh -c \"echo заметка > /notes.txt && cat /notes.txt\"",
+   "out": [
+    "заметка"
+   ],
+   "rc": 0,
+   "sec": 0.69
+  },
+  "novol_rm": {
+   "cmd": "docker rm notes-demo",
+   "out": [
+    "notes-demo"
+   ],
+   "rc": 0,
+   "sec": 0.09
+  },
+  "novol_read": {
+   "cmd": "docker run --rm python:3.12-slim cat /notes.txt",
+   "out": [
+    "cat: /notes.txt: No such file or directory"
+   ],
+   "rc": 1,
+   "sec": 0.5
+  },
+  "vol_create": {
+   "cmd": "docker volume create notes",
+   "out": [
+    "notes"
+   ],
+   "rc": 0,
+   "sec": 0.08
+  },
+  "vol_write": {
+   "cmd": "docker run --rm -v notes:/data python:3.12-slim sh -c \"echo заметка > /data/notes.txt\"",
+   "out": [],
+   "rc": 0,
+   "sec": 0.49
+  },
+  "vol_read": {
+   "cmd": "docker run --rm -v notes:/data python:3.12-slim cat /data/notes.txt",
+   "out": [
+    "заметка"
+   ],
+   "rc": 0,
+   "sec": 0.54
+  },
+  "vol_inspect": {
+   "cmd": "docker volume inspect notes",
+   "out": [
+    "[",
+    "    {",
+    "        \"CreatedAt\": \"2026-11-02T00:38:41Z\",",
+    "        \"Driver\": \"local\",",
+    "        \"Labels\": null,",
+    "        \"Mountpoint\": \"/var/lib/docker/volumes/notes/_data\",",
+    "        \"Name\": \"notes\",",
+    "        \"Options\": null,",
+    "        \"Scope\": \"local\"",
+    "    }",
+    "]"
+   ],
+   "rc": 0,
+   "sec": 0.06
+  },
+  "vol_rm": {
+   "cmd": "docker volume rm notes",
+   "out": [
+    "notes"
+   ],
+   "rc": 0,
+   "sec": 0.06
+  },
+  "net_create": {
+   "cmd": "docker network create demo-net",
+   "out": [
+    "5e930687fc8167b093b5cb11340ceb94a226ab9dbb4826d8ad52764c9e0d0e78"
+   ],
+   "rc": 0,
+   "sec": 0.09
+  },
+  "net_cache": {
+   "cmd": "docker run -d --name cache --network demo-net redis:7-alpine",
+   "out": [
+    "86a5cf66bb4f03c05ff5d84eb0e7bfabd9b4251fd4d86f60a7a39437afa5d71e"
+   ],
+   "rc": 0,
+   "sec": 0.31
+  },
+  "net_dns": {
+   "cmd": "docker run --rm --network demo-net python:3.12-slim python -c \"import socket; print(socket.gethostbyname('cache'))\"",
+   "out": [
+    "172.18.0.2"
+   ],
+   "rc": 0,
+   "sec": 0.55
+  },
+  "net_ping": {
+   "cmd": "docker run --rm --network demo-net redis:7-alpine redis-cli -h cache ping",
+   "out": [
+    "PONG"
+   ],
+   "rc": 0,
+   "sec": 0.45
+  },
+  "net_default": {
+   "cmd": "docker run --rm python:3.12-slim python -c \"import socket; print(socket.gethostbyname('cache'))\"",
+   "out": [
+    "Traceback (most recent call last):",
+    "  File \"<string>\", line 1, in <module>",
+    "socket.gaierror: [Errno -2] Name or service not known"
+   ],
+   "rc": 1,
+   "sec": 0.61
+  },
+  "net_localhost": {
+   "cmd": "docker run --rm --network demo-net python:3.12-slim python -c \"import socket; socket.create_connection(('localhost', 6379), timeout=2)\"",
+   "out": [
+    "Traceback (most recent call last):",
+    "  File \"<string>\", line 1, in <module>",
+    "  File \"/usr/local/lib/python3.12/socket.py\", line 865, in create_connection",
+    "    raise exceptions[0]",
+    "  File \"/usr/local/lib/python3.12/socket.py\", line 850, in create_connection",
+    "    sock.connect(sa)",
+    "ConnectionRefusedError: [Errno 111] Connection refused"
+   ],
+   "rc": 1,
+   "sec": 0.55
+  },
+  "compose_up": {
+   "cmd": "docker compose up -d --build",
+   "out": [
+    " Image counter-web Building ",
+    "#1 [internal] load local bake definitions",
+    "#1 reading from stdin 565B done",
+    "#1 DONE 0.0s",
+    "",
+    "#2 [internal] load build definition from Dockerfile",
+    "#2 transferring dockerfile: 200B 0.0s done",
+    "#2 DONE 0.0s",
+    "",
+    "#3 [internal] load metadata for docker.io/library/python:3.12-slim",
+    "#3 DONE 0.0s",
+    "",
+    "#4 [internal] load .dockerignore",
+    "#4 transferring context: 77B done",
+    "#4 DONE 0.0s",
+    "",
+    "#5 [internal] load build context",
+    "#5 transferring context: 916B done",
+    "#5 DONE 0.0s",
+    "",
+    "#6 [1/5] FROM docker.io/library/python:3.12-slim@sha256:aa943ce411423c7582288f18707ff66eddcbaeb510502d747a72aeb34f30d159",
+    "#6 resolve docker.io/library/python:3.12-slim@sha256:aa943ce411423c7582288f18707ff66eddcbaeb510502d747a72aeb34f30d159 0.0s done",
+    "#6 DONE 0.0s",
+    "",
+    "#7 [2/5] WORKDIR /app",
+    "#7 CACHED",
+    "",
+    "#8 [4/5] RUN pip install --no-cache-dir -r requirements.txt",
+    "#8 CACHED",
+    "",
+    "#9 [3/5] COPY requirements.txt .",
+    "#9 CACHED",
+    "",
+    "#10 [5/5] COPY app.py .",
+    "#10 CACHED",
+    "",
+    "#11 exporting to image",
+    "#11 exporting layers done",
+    "#11 exporting manifest sha256:500dfc8887be871b256e5c0dfa6b4ab5ad73854b2881b1d6f71852b285b5aa80 0.0s done",
+    "#11 exporting config sha256:690b6102cc6365da46c60b8f9689db05601d0028f76c52de22bf940fde6e78c8 done",
+    "#11 exporting attestation manifest sha256:76d94e0a8ea6881906199f67dc6275291bbaed925787572f6e6a25e788d84cce 0.0s done",
+    "#11 exporting manifest list sha256:be98a8cf8e6d55f064b5411a73ce6e307cc255875508daf26706125c13334676 done",
+    "#11 naming to docker.io/library/counter-web:latest done",
+    "#11 unpacking to docker.io/library/counter-web:latest 0.0s done",
+    "#11 DONE 0.1s",
+    "",
+    "#12 resolving provenance for metadata file",
+    "#12 DONE 0.0s",
+    " Image counter-web Built ",
+    " Network counter_default Creating ",
+    " Network counter_default Created ",
+    " Volume counter_redis-data Creating ",
+    " Volume counter_redis-data Created ",
+    " Container counter-redis-1 Creating ",
+    " Container counter-redis-1 Created ",
+    " Container counter-web-1 Creating ",
+    " Container counter-web-1 Created ",
+    " Container counter-redis-1 Starting ",
+    " Container counter-redis-1 Started ",
+    " Container counter-redis-1 Waiting ",
+    " Container counter-redis-1 Healthy ",
+    " Container counter-web-1 Starting ",
+    " Container counter-web-1 Started "
+   ],
+   "rc": 0,
+   "sec": 4.28
+  },
+  "compose_ps": {
+   "cmd": "docker compose ps",
+   "out": [
+    "NAME              IMAGE            COMMAND                  SERVICE   CREATED         STATUS                   PORTS",
+    "counter-redis-1   redis:7-alpine   \"docker-entrypoint.s…\"   redis     3 seconds ago   Up 3 seconds (healthy)   6379/tcp",
+    "counter-web-1     counter-web      \"python app.py\"          web       3 seconds ago   Up Less than a second    0.0.0.0:8080->8000/tcp, [::]:8080->8000/tcp"
+   ],
+   "rc": 0,
+   "sec": 0.18
+  },
+  "curl_c1": {
+   "cmd": "curl http://localhost:8080",
+   "out": [
+    "Посещений: 1, контейнер 3f59d3b82482"
+   ],
+   "rc": 200,
+   "sec": 0.01
+  },
+  "curl_c2": {
+   "cmd": "curl http://localhost:8080",
+   "out": [
+    "Посещений: 2, контейнер 3f59d3b82482"
+   ],
+   "rc": 200,
+   "sec": 0.0
+  },
+  "curl_c3": {
+   "cmd": "curl http://localhost:8080",
+   "out": [
+    "Посещений: 3, контейнер 3f59d3b82482"
+   ],
+   "rc": 200,
+   "sec": 0.0
+  },
+  "compose_logs": {
+   "cmd": "docker compose logs --no-color web",
+   "out": [
+    "web-1  | Сервер слушает порт 8000",
+    "web-1  | 172.18.0.1 - - [02/Nov/2026 00:38:52] \"GET / HTTP/1.1\" 200 -",
+    "web-1  | 172.18.0.1 - - [02/Nov/2026 00:38:52] \"GET / HTTP/1.1\" 200 -",
+    "web-1  | 172.18.0.1 - - [02/Nov/2026 00:38:52] \"GET / HTTP/1.1\" 200 -"
+   ],
+   "rc": 0,
+   "sec": 0.18
+  },
+  "compose_volumes": {
+   "cmd": "docker volume ls --filter name=counter",
+   "out": [
+    "DRIVER    VOLUME NAME",
+    "local     counter_redis-data"
+   ],
+   "rc": 0,
+   "sec": 0.06
+  },
+  "compose_down": {
+   "cmd": "docker compose down",
+   "out": [
+    " Container counter-web-1 Stopping ",
+    " Container counter-web-1 Stopped ",
+    " Container counter-web-1 Removing ",
+    " Container counter-web-1 Removed ",
+    " Container counter-redis-1 Stopping ",
+    " Container counter-redis-1 Stopped ",
+    " Container counter-redis-1 Removing ",
+    " Container counter-redis-1 Removed ",
+    " Network counter_default Removing ",
+    " Network counter_default Removed "
+   ],
+   "rc": 0,
+   "sec": 1.02
+  },
+  "compose_up2": {
+   "cmd": "docker compose up -d",
+   "out": [
+    " Network counter_default Creating ",
+    " Network counter_default Created ",
+    " Container counter-redis-1 Creating ",
+    " Container counter-redis-1 Created ",
+    " Container counter-web-1 Creating ",
+    " Container counter-web-1 Created ",
+    " Container counter-redis-1 Starting ",
+    " Container counter-redis-1 Started ",
+    " Container counter-redis-1 Waiting ",
+    " Container counter-redis-1 Healthy ",
+    " Container counter-web-1 Starting ",
+    " Container counter-web-1 Started "
+   ],
+   "rc": 0,
+   "sec": 3.3
+  },
+  "curl_c4": {
+   "cmd": "curl http://localhost:8080",
+   "out": [
+    "Посещений: 4, контейнер 8d74cb8b09a1"
+   ],
+   "rc": 200,
+   "sec": 0.53
+  },
+  "compose_down_v": {
+   "cmd": "docker compose down -v",
+   "out": [
+    " Container counter-web-1 Stopping ",
+    " Container counter-web-1 Stopped ",
+    " Container counter-web-1 Removing ",
+    " Container counter-web-1 Removed ",
+    " Container counter-redis-1 Stopping ",
+    " Container counter-redis-1 Stopped ",
+    " Container counter-redis-1 Removing ",
+    " Container counter-redis-1 Removed ",
+    " Network counter_default Removing ",
+    " Volume counter_redis-data Removing ",
+    " Volume counter_redis-data Removed ",
+    " Network counter_default Removed "
+   ],
+   "rc": 0,
+   "sec": 1.07
+  },
+  "compose_up3": {
+   "cmd": "docker compose up -d",
+   "out": [
+    " Network counter_default Creating ",
+    " Network counter_default Created ",
+    " Volume counter_redis-data Creating ",
+    " Volume counter_redis-data Created ",
+    " Container counter-redis-1 Creating ",
+    " Container counter-redis-1 Created ",
+    " Container counter-web-1 Creating ",
+    " Container counter-web-1 Created ",
+    " Container counter-redis-1 Starting ",
+    " Container counter-redis-1 Started ",
+    " Container counter-redis-1 Waiting ",
+    " Container counter-redis-1 Healthy ",
+    " Container counter-web-1 Starting ",
+    " Container counter-web-1 Started "
+   ],
+   "rc": 0,
+   "sec": 3.34
+  },
+  "curl_c5": {
+   "cmd": "curl http://localhost:8080",
+   "out": [
+    "Посещений: 1, контейнер 476d9c5880f2"
+   ],
+   "rc": 200,
+   "sec": 0.53
+  },
+  "bug_up": {
+   "cmd": "docker compose up -d",
+   "out": [
+    " Container counter-redis-1 Running ",
+    " Container counter-web-1 Recreate ",
+    " Container counter-web-1 Recreated ",
+    " Container counter-redis-1 Waiting ",
+    " Container counter-redis-1 Healthy ",
+    " Container counter-web-1 Starting ",
+    " Container counter-web-1 Started "
+   ],
+   "rc": 0,
+   "sec": 1.41
+  },
+  "bug_curl": {
+   "cmd": "curl http://localhost:8080",
+   "out": [
+    "Ошибка Redis: Error 111 connecting to localhost:6379. Connection refused."
+   ],
+   "rc": 500,
+   "sec": 0.52
+  },
+  "bug_logs": {
+   "cmd": "docker compose logs --no-color web",
+   "out": [
+    "web-1  | Сервер слушает порт 8000",
+    "web-1  | 172.18.0.1 - - [02/Nov/2026 00:39:04] \"GET / HTTP/1.1\" 500 -"
+   ],
+   "rc": 0,
+   "sec": 0.17
+  },
+  "compose_final_down": {
+   "cmd": "docker compose down -v --rmi local",
+   "out": [
+    " Container counter-web-1 Stopping ",
+    " Container counter-web-1 Stopped ",
+    " Container counter-web-1 Removing ",
+    " Container counter-web-1 Removed ",
+    " Container counter-redis-1 Stopping ",
+    " Container counter-redis-1 Stopped ",
+    " Container counter-redis-1 Removing ",
+    " Container counter-redis-1 Removed ",
+    " Image counter-web:latest Removing ",
+    " Volume counter_redis-data Removing ",
+    " Network counter_default Removing ",
+    " Volume counter_redis-data Removed ",
+    " Image counter-web:latest Removed ",
+    " Network counter_default Removed "
+   ],
+   "rc": 0,
+   "sec": 1.15
+  }
+ }
+}
